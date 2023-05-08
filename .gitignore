@@ -5,3 +5,4 @@ target/
 .metahash
 meta.txt
 *.meta.txt
+.idea
