@@ -70,3 +70,53 @@
   opacity: 0.7;
   filter: blur(50px);
 }
+
+
+.test {
+  /*--angle: 180deg;*/
+  /*border-width: 4px;*/
+  /*border-style: dotted;*/
+  /*border-color: grey;*/
+  /*border-image-source: linear-gradient(*/
+  /*  var(--angle),*/
+  /*  #900000,*/
+  /*  #ee2400,*/
+  /*  transparent 10rem*/
+  /*);*/
+  /*border-image-slice: 1;*/
+}
+
+/*border: 4px solid;*/
+
+/*border-image-source: linear-gradient(256.84deg, #2F81ED 1.56%, #2BD071 84.59%);*/
+
+
+/*.box::before {*/
+/*  content: "";*/
+/*  position: absolute;*/
+/*  inset: 0;*/
+/*  border-radius: 20px 20px 0 0;*/
+/*  height: 50%;*/
+/*  padding: 4px 4px 0px 4px; !* control the border thickness *!*/
+/*  background: linear-gradient(256.84deg, #2f81ed 1.56%, #2bd071 84.59%);*/
+/*  -webkit-mask: linear-gradient(#fff 0 0) content-box,*/
+/*  linear-gradient(#fff 0 0);*/
+/*  mask: linear-gradient(#fff 0 0) content-box,*/
+/*  linear-gradient(#fff 0 0);*/
+/*  -webkit-mask-composite: xor;*/
+/*  mask-composite: exclude;*/
+/*  pointer-events: none;*/
+
+/*}*/
+
+.shadow {
+  position: relative;
+  z-index: 10;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(to top, transparent 50%, #9198e5 50%),
+  /*linear-gradient(green, blue),*/
+  linear-gradient(to top, #1F1F1F 32%, rgba(32, 32, 32, 0) 48%);
+
+}
+
