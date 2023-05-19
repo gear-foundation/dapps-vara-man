@@ -1,7 +1,6 @@
 import Identicon from '@polkadot/react-identicon'
-import clsx from 'clsx'
 import { buttonStyles } from '@gear-js/ui'
-import { cn } from '@/app/utils'
+import { cn } from '@/lib/utils'
 
 type Props = {
   address: string

@@ -56,6 +56,23 @@
   .btn--loading {
     @apply opacity-90 gap-2 before:w-4 before:h-4 before:border-2 before:border-neutral-400 before:rounded-full before:border-l-transparent before:border-t-transparent before:animate-spin;
   }
+
+
+  .level-mode {
+    @apply relative;
+
+    @apply before:absolute before:-inset-0.5 before:-z-2 before:rounded-[10px] before:backdrop-blur-[2px]
+    before:bg-gradient-to-bl before:from-[#8D8D8D] before:to-[#1E1E1E] before:from-5% before:to-95%;
+
+    @apply after:absolute after:inset-0 after:z-0 after:rounded-[8px] before:backdrop-blur-[2px]
+    after:bg-gradient-to-bl after:from-[rgba(255,255,255,5%)] after:to-transparent after:from-5% after:to-95%;
+  }
+
+  .level-mode.level-mode--active {
+    @apply before:from-[#2F82EC] before:to-[#17B769] before:backdrop-blur-none;
+
+    @apply after:from-[#16b768] after:to-[#2f81ed] before:backdrop-blur-none;
+  }
 }
 
 .ellipse {
@@ -115,8 +132,7 @@
   width: 150px;
   height: 150px;
   background: linear-gradient(to top, transparent 50%, #9198e5 50%),
-  /*linear-gradient(green, blue),*/
-  linear-gradient(to top, #1F1F1F 32%, rgba(32, 32, 32, 0) 48%);
+    /*linear-gradient(green, blue),*/ linear-gradient(to top, #1f1f1f 32%, rgba(32, 32, 32, 0) 48%);
 
 }
 

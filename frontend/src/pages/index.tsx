@@ -1,7 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 
-const routes = [{ path: '/', Page: lazy(() => import('./home')) }]
+const routes = [
+  { path: '/', Page: lazy(() => import('./home')) },
+  { path: '/levels', Page: lazy(() => import('./levels')) },
+]
 
 export const Routing = () => {
   return (
