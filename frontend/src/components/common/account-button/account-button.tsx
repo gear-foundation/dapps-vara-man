@@ -8,13 +8,20 @@ type Props = {
   name: string | undefined
   onClick: () => void
   isActive?: boolean
-  block?: boolean
+  simple?: boolean
 }
 
-export const AccountButton = ({ address, name, onClick, isActive }: Props) => (
+export const AccountButton = ({
+  address,
+  name,
+  onClick,
+  isActive,
+  simple,
+}: Props) => (
   <button
-    className={clsx(
-      'btn !inline-grid grid-cols-[28px_1fr_28px] !justify-start gap-2.5 w-full px-7 whitespace-nowrap',
+    className={cn(
+      'btn !inline-grid !justify-start gap-2.5 w-full px-7 whitespace-nowrap',
+      simple ? 'grid-cols-[28px_1fr]' : 'grid-cols-[28px_1fr_14px]',
       isActive ? 'btn--primary' : buttonStyles.light,
       buttonStyles.button
     )}

@@ -31,6 +31,7 @@ export const AccountComponent = () => {
             address={account.address}
             name={account.meta.name}
             onClick={openModal}
+            simple
           />
         </div>
       ) : (
