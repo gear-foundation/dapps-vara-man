@@ -4,6 +4,7 @@ import { lazy, Suspense } from 'react'
 const routes = [
   { path: '/', Page: lazy(() => import('./home')) },
   { path: '/levels', Page: lazy(() => import('./levels')) },
+  { path: '/rules', Page: lazy(() => import('./rules')) },
 ]
 
 export const Routing = () => {

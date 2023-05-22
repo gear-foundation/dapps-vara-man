@@ -59,13 +59,20 @@
 
 
   .level-mode {
-    @apply relative;
+    --from: #8D8D8D;
+    --to: #1E1E1E;
 
-    @apply before:absolute before:-inset-0.5 before:-z-2 before:rounded-[10px] before:backdrop-blur-[2px]
-    before:bg-gradient-to-bl before:from-[#8D8D8D] before:to-[#1E1E1E] before:from-5% before:to-95%;
+    @apply relative transition-colors;
 
-    @apply after:absolute after:inset-0 after:z-0 after:rounded-[8px] before:backdrop-blur-[2px]
+    @apply before:absolute before:-inset-0.5 before:-z-2 before:rounded-[10px] before:backdrop-blur-[2px] transition-colors
+    before:bg-gradient-to-bl before:from-[var(--from)] before:to-[var(--to)] before:from-5% before:to-95%;
+
+    @apply after:absolute after:inset-0 after:z-0 after:rounded-[8px] before:backdrop-blur-[2px] transition-colors
     after:bg-gradient-to-bl after:from-[rgba(255,255,255,5%)] after:to-transparent after:from-5% after:to-95%;
+  }
+
+  .level-mode.level-mode--to-right {
+    @apply before:bg-gradient-to-br after:bg-gradient-to-br
   }
 
   .level-mode.level-mode--active {

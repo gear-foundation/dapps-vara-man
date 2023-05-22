@@ -24,12 +24,11 @@ export const Footer = () => (
         </li>
       ))}
     </ul>
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-        <Link to="/levels">Levels</Link>
-      </li>
-    </ul>
+    <div className="flex space-x-1">
+      <Link to="/">Home</Link>
+      <Link to="/levels">Levels</Link>
+      <Link to="/rules">Rules</Link>
+    </div>
     <p className="text-white text-opacity-60 text-xs">
       &copy; {new Date().getFullYear()} Gear Technologies, Inc. All Rights
       Reserved.
