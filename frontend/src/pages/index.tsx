@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
+import { useInitGame } from '@/app/hooks/use-game'
 
 const routes = [
   { path: '/', Page: lazy(() => import('./home')) },
@@ -8,6 +9,8 @@ const routes = [
 ]
 
 export const Routing = () => {
+  useInitGame()
+
   return (
     <Routes>
       {routes.map(({ path, Page }) => (

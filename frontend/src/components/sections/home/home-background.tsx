@@ -1,6 +1,6 @@
 type HomeBackgroundProps = BaseComponentProps & {}
 
-export function HomeBackground({ children }: HomeBackgroundProps) {
+export function HomeBackground({}: HomeBackgroundProps) {
   return (
     <div className="absolute inset-0 flex justify-center h-full bg-[#1E1E1E] pointer-events-none">
       <div className="absolute top-15 -bottom-0 -inset-x-[31.5%] z-1 mix-blend-color-dodge">

@@ -4,7 +4,11 @@
 
 @layer base {
   html {
-    background-color: #1e1e1e;
+    @apply bg-[#1e1e1e] font-kanit;
+  }
+
+  body {
+    @apply font-kanit !important;
   }
 
   .container {
@@ -28,6 +32,9 @@
   .btn--primary {
     @apply text-white bg-primary hover:bg-primary/70 active:bg-primary transition-colors;
   }
+  .btn--theme-red {
+    @apply text-white bg-[#F24A4A] hover:bg-[#A02D30] active:bg-[#F24A4A] transition-colors;
+  }
 
   .btn--ghost {
     @apply text-white bg-white/10 hover:bg-white/30 active:bg-white/50 transition-colors
@@ -46,7 +53,7 @@
   }
 
   .btn:disabled {
-    @apply cursor-not-allowed
+    @apply cursor-not-allowed bg-neutral-400
   }
 
   .btn--loading {

@@ -79,7 +79,7 @@ export function PopupContainer({
                 <div className="flex items-center justify-between py-4.5 px-8 bg-[#222225] rounded-t-[18px]">
                   <Dialog.Title
                     as="h3"
-                    className="text-white/80 font-poppins text-2xl font-bold leading-9"
+                    className="text-white/80 text-2xl font-bold leading-9"
                   >
                     {title}
                   </Dialog.Title>

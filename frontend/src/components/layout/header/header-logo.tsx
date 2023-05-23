@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Icons } from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
 
-export const Logo = () => {
+export const HeaderLogo = () => {
   const { pathname } = useLocation()
 
   return (

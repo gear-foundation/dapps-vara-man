@@ -8,7 +8,8 @@ import {
 } from '@gear-js/react-hooks'
 import { Alert, alertStyles } from '@gear-js/ui'
 import { ENV } from '@/app/consts'
-import { AppProvider, GameProvider } from '@/app/context'
+import { AppProvider } from '@/app/context/ctx-app'
+import { GameProvider } from '@/app/context/ctx-game'
 
 const ApiProvider = ({ children }: ProviderProps) => (
   <GearApiProvider providerAddress={ENV.NODE}>{children}</GearApiProvider>

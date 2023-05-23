@@ -1,26 +1,42 @@
-import { Button, Input } from '@gear-js/ui'
+import { Input } from '@gear-js/ui'
 import { Icons } from '@/components/ui/icons'
-import { useApp } from '@/app/context'
+import { useApp } from '@/app/context/ctx-app'
 import { useForm } from '@mantine/form'
 import { initialRegister } from '@/app/consts'
-import { hexRequired } from '@/lib/form-validations'
+import { hexRequired, isExists } from '@/lib/form-validations'
+import { useGameMessage } from '@/app/hooks/use-game'
 
 const validate: Record<string, typeof hexRequired> = {
-  programId: hexRequired,
+  wallet: hexRequired,
+  nickname: isExists,
 }
 
 type HomeRegisterFormProps = BaseComponentProps & {}
 
-export function HomeRegisterForm({ children }: HomeRegisterFormProps) {
-  const { isPending } = useApp()
+export function HomeRegisterForm() {
+  const { isPending, setIsPending } = useApp()
+  const handleMessage = useGameMessage()
+
   const form = useForm({
     initialValues: initialRegister,
-    validate: validate,
+    validate,
     validateInputOnChange: true,
   })
-  const { getInputProps, errors } = form
+  const { getInputProps, errors, reset } = form
+
+  const onSuccess = () => {
+    setIsPending(false)
+    reset()
+  }
+  const onError = () => {
+    setIsPending(false)
+  }
   const handleSubmit = form.onSubmit((values) => {
-    // setLesson({ step: +values.currentStep, programId: values.programId })
+    console.log(values)
+    handleMessage(
+      { RegisterPlayer: { name: values.nickname } },
+      { onSuccess, onError }
+    )
   })
 
   return (
@@ -32,25 +48,25 @@ export function HomeRegisterForm({ children }: HomeRegisterFormProps) {
         <Input
           placeholder="Substrate address"
           direction="y"
-          {...getInputProps('programId')}
+          {...getInputProps('wallet')}
         />
       </div>
       <div className="">
         <Input
           placeholder="Nickname"
           direction="y"
-          {...getInputProps('programId')}
+          {...getInputProps('nickname')}
         />
       </div>
       <div className="flex justify-center">
-        <Button
-          text="Start game"
-          color="primary"
-          icon={() => <Icons.gameJoystick className="w-5 h-5 mr-2.5" />}
+        <button
           type="submit"
           disabled={Object.keys(errors).length > 0 || isPending}
-          className="w-full max-w-[206px]"
-        />
+          className="btn btn--primary w-full max-w-[205px]"
+        >
+          <Icons.gameJoystick className="w-5 h-5 mr-2.5" />
+          <span>Start game</span>
+        </button>
       </div>
     </form>
   )

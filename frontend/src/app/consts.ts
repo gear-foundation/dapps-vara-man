@@ -6,10 +6,14 @@ export const LOCAL_STORAGE = {
 
 export const ENV = {
   NODE: import.meta.env.VITE_NODE_ADDRESS,
+  GAME: import.meta.env.VITE_GAME_ADDRESS,
 }
 
-export const initialRegister = {
-  programId: '' as HexString,
-  programId2: '' as HexString,
-  currentStep: 1,
+export type IRegisterForm = {
+  wallet: HexString | ''
+  nickname: HexString | ''
+}
+export const initialRegister: IRegisterForm = {
+  wallet: '',
+  nickname: '',
 }
