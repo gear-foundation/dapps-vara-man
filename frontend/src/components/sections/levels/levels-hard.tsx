@@ -1,27 +1,17 @@
 import { Icons } from '@/components/ui/icons'
-import { Button } from '@gear-js/ui'
+import { LevelsBackground } from '@/components/sections/levels/levels-background'
+import { LevelsModeContent } from './levels-mode-content'
 
 type LevelsHardProps = BaseComponentProps & {}
 
-export function LevelsHard({ children }: LevelsHardProps) {
+export function LevelsHard({}: LevelsHardProps) {
   return (
-    <div className="flex">
-      <div className="grow">
-        <div className="absolute inset-0 -z-1 pointer-events-none">image</div>
-        <div className="flex justify-center">
-          <img
-            src="/images/levels/hard-t.svg"
-            alt="Easy"
-            width={360}
-            height={361}
-          />
-        </div>
+    <>
+      <div className="relative grow">
+        <LevelsBackground picture="/images/levels/bg3.jpg" />
       </div>
-      <div className="">
-        <div className="typo-h2">
-          <i className="font-extralight text-[#F24A4A]">Hard</i>{' '}
-          <b className="">level</b>
-        </div>
+      {/*Level info*/}
+      <LevelsModeContent title="Hard" colorText="text-[#F24A4A]">
         <div className="mt-8">
           <ul>
             <li>
@@ -108,7 +98,7 @@ export function LevelsHard({ children }: LevelsHardProps) {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </LevelsModeContent>
+    </>
   )
 }

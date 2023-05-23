@@ -58,6 +58,12 @@ module.exports = {
         mmd: { max: '767px' },
         msm: { max: '474px' },
         mxs: { max: '374px' },
+        lgh: { raw: '(min-height: 940px)' },
+        mdh: { raw: '(min-height: 800px)' },
+        smh: { raw: '(min-height: 700px)' },
+        mlgh: { raw: '(max-height: 939px)' },
+        mmdh: { raw: '(max-height: 799px)' },
+        msmh: { raw: '(max-height: 699px)' },
       },
       spacing: {
         2.5: '0.625rem',
@@ -115,5 +121,5 @@ module.exports = {
     container: false,
     // preflight: false,
   },
-  plugins: [],
+  plugins: [require('tailwindcss-radix')],
 }

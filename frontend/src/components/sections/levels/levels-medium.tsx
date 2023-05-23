@@ -1,27 +1,17 @@
 import { Icons } from '@/components/ui/icons'
-import { Button } from '@gear-js/ui'
+import { LevelsBackground } from '@/components/sections/levels/levels-background'
+import { LevelsModeContent } from '@/components/sections/levels/levels-mode-content'
 
 type LevelsMediumProps = BaseComponentProps & {}
 
-export function LevelsMedium({ children }: LevelsMediumProps) {
+export function LevelsMedium({}: LevelsMediumProps) {
   return (
-    <div className="flex">
-      <div className="grow">
-        <div className="absolute inset-0 -z-1 pointer-events-none">image</div>
-        <div className="flex justify-center">
-          <img
-            src="/images/levels/medium-t.svg"
-            alt="Easy"
-            width={360}
-            height={361}
-          />
-        </div>
+    <>
+      <div className="relative grow">
+        <LevelsBackground picture="/images/levels/bg2.jpg" />
       </div>
-      <div className="">
-        <div className="typo-h2">
-          <i className="font-extralight text-[#F46402]">Medium</i>{' '}
-          <b className="">level</b>
-        </div>
+      {/*Level info*/}
+      <LevelsModeContent title="Medium" colorText="text-[#F46402]">
         <div className="mt-8">
           <ul>
             <li>
@@ -104,14 +94,14 @@ export function LevelsMedium({ children }: LevelsMediumProps) {
               </div>
             </li>
           </ul>
-          <div className="pl-36 mt-12">
-            <button className="btn space-x-2.5 bg-[#F46402] hover:bg-[#933F0D] transition-colors">
-              <Icons.gameJoystick className="w-5 h-5" />
-              <span>Start game</span>
-            </button>
-          </div>
         </div>
-      </div>
-    </div>
+        <div className="pl-36 mt-12">
+          <button className="btn space-x-2.5 bg-[#F46402] hover:bg-[#933F0D] transition-colors">
+            <Icons.gameJoystick className="w-5 h-5" />
+            <span>Start game</span>
+          </button>
+        </div>
+      </LevelsModeContent>
+    </>
   )
 }

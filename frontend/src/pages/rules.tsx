@@ -59,7 +59,7 @@ export default function Rules() {
         <motion.img
           key={page}
           src={images[imageIndex]}
-          className="absolute w-full"
+          className="absolute w-full h-full object-contain"
           custom={direction}
           variants={variants}
           initial="enter"

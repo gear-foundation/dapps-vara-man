@@ -1,28 +1,19 @@
 import { Icons } from '@/components/ui/icons'
-import { Button } from '@gear-js/ui'
+import { Button, buttonStyles } from '@gear-js/ui'
+import { LevelsBackground } from '@/components/sections/levels/levels-background'
+import { LevelsModeContent } from '@/components/sections/levels/levels-mode-content'
+import { cn } from '@/lib/utils'
 
 type LevelsEasyProps = BaseComponentProps & {}
 
-export function LevelsEasy({ children }: LevelsEasyProps) {
+export function LevelsEasy({}: LevelsEasyProps) {
   return (
-    <div className="flex">
-      <div className="grow">
-        <div className="absolute inset-0 -z-1 pointer-events-none">image</div>
-        <div className="flex justify-center">
-          <img
-            src="/images/levels/easy-t.svg"
-            alt="Easy"
-            width={360}
-            height={361}
-          />
-        </div>
+    <>
+      <div className="relative grow">
+        <LevelsBackground picture="/images/levels/bg1.jpg" />
       </div>
       {/*Level info*/}
-      <div className="">
-        <div className="typo-h2">
-          <i className="font-extralight text-primary">Easy</i>{' '}
-          <b className="">level</b>
-        </div>
+      <LevelsModeContent title="Easy" colorText="text-primary">
         <div className="mt-8">
           <ul>
             <li>
@@ -106,17 +97,13 @@ export function LevelsEasy({ children }: LevelsEasyProps) {
             </li>
           </ul>
           <div className="pl-36 mt-12">
-            <Button
-              icon={() => (
-                <>
-                  <Icons.gameJoystick className="w-5 h-5 mr-2.5" />
-                </>
-              )}
-              text={'Start game'}
-            />
+            <button className={cn('btn space-x-2.5', buttonStyles.primary)}>
+              <Icons.gameJoystick className="w-5 h-5" />
+              <span>Start game</span>
+            </button>
           </div>
         </div>
-      </div>
-    </div>
+      </LevelsModeContent>
+    </>
   )
 }

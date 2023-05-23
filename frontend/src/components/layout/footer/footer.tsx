@@ -30,7 +30,7 @@ export const Footer = () => (
       <Link to="/rules">Rules</Link>
     </div>
     <p className="text-white text-opacity-60 text-xs">
-      &copy; {new Date().getFullYear()} Gear Technologies, Inc. All Rights
+      &copy; {new Date().getFullYear()} Gear Foundation, Inc. All Rights
       Reserved.
     </p>
   </footer>
