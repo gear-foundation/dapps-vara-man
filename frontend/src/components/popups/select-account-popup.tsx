@@ -1,18 +1,20 @@
 import type { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
-import { Modal } from '@gear-js/ui'
 import { AccountsList } from '@/components/common/accounts-list'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import {
+  PopupContainer,
+  PopupContainerProps,
+} from '@/components/common/popup-container'
 
-type Props = {
+type Props = Pick<PopupContainerProps, 'isOpen' | 'setIsOpen'> & {
   accounts: InjectedAccountWithMeta[] | undefined
-  close: () => void
 }
 
-export const SelectAccountPopup = ({ accounts, close }: Props) => (
-  <Modal heading="Connect" close={close}>
+export const SelectAccountPopup = ({ accounts, isOpen, setIsOpen }: Props) => (
+  <PopupContainer title="Connect" setIsOpen={setIsOpen} isOpen={isOpen}>
     {accounts ? (
       <ScrollArea className="max-h-80 pr-5 -mr-5" type="auto">
-        <AccountsList list={accounts} onChange={close} />
+        <AccountsList list={accounts} onChange={() => setIsOpen((_) => !_)} />
       </ScrollArea>
     ) : (
       <p>
@@ -27,5 +29,5 @@ export const SelectAccountPopup = ({ accounts, close }: Props) => (
         .
       </p>
     )}
-  </Modal>
+  </PopupContainer>
 )

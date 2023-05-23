@@ -6,14 +6,10 @@ import { AccountButton } from '@/components/common/account-button'
 import { SelectAccountPopup } from '@/components/popups/select-account-popup'
 
 export const AccountComponent = () => {
-  // const { lesson, isAdmin } = useLessons()
   const { account, accounts } = useAccount()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // const { pathname } = useLocation()
-
   const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
 
   return (
     <>
@@ -35,9 +31,11 @@ export const AccountComponent = () => {
       ) : (
         <Button text="Connect Account" onClick={openModal} color="lightGreen" />
       )}
-      {isModalOpen && (
-        <SelectAccountPopup accounts={accounts} close={closeModal} />
-      )}
+      <SelectAccountPopup
+        accounts={accounts}
+        setIsOpen={setIsModalOpen}
+        isOpen={isModalOpen}
+      />
     </>
   )
 }

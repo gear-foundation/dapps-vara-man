@@ -1,5 +1,5 @@
 import { Icons } from '@/components/ui/icons'
-import { Button, buttonStyles } from '@gear-js/ui'
+import { buttonStyles } from '@gear-js/ui'
 import { LevelsBackground } from '@/components/sections/levels/levels-background'
 import { LevelsModeContent } from '@/components/sections/levels/levels-mode-content'
 import { cn } from '@/lib/utils'

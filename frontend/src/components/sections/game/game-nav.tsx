@@ -3,6 +3,7 @@ import { buttonStyles } from '@gear-js/ui'
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'
 import { GameNavItem } from '@/components/sections/game/game-nav-item'
+import { GameNavChampions } from '@/components/sections/game/game-nav-champions'
 
 const data = gameNavData
 
@@ -15,9 +16,7 @@ export function GameNav({}: GameNavProps) {
 
       <div className="flex items-center justify-between py-10 px-7.5">
         <div className="flex space-x-10">
-          <button className={cn('btn px-6', buttonStyles.lightGreen)}>
-            Show champions
-          </button>
+          <GameNavChampions />
 
           <div className="flex space-x-8">
             <GameNavItem icon={data[0].icon} className={data[0].color}>
