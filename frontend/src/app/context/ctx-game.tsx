@@ -1,19 +1,18 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
-import { IGameState } from '@/app/types/game'
-// import { DominoTileType, GameWasmStateResponse, IGameState, IPlayer, PlayerChoiceType } from '../types/game';
+import { IGameState, IPlayer } from '@/app/types/game'
 
 const useGameData = () => {
   const [game, setGame] = useState<IGameState>()
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
-  // const [players, setPlayers] = useState<IPlayer[]>([]);
+  const [player, setPlayer] = useState<IPlayer>()
 
   return {
     game,
     setGame,
     isAdmin,
     setIsAdmin,
-    // players,
-    // setPlayers,
+    player,
+    setPlayer,
   }
 }
 

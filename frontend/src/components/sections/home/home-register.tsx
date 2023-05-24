@@ -2,9 +2,7 @@ import { HomeBackground } from '@/components/sections/home/home-background'
 import { HomeFormGradient } from '@/components/sections/home/home-form-gradient'
 import { HomeRegisterForm } from '@/components/sections/home/home-register-form'
 
-type HomeInitProps = BaseComponentProps & {}
-
-export function HomeRegister({ children }: HomeInitProps) {
+export function HomeRegister() {
   return (
     <>
       <HomeBackground />

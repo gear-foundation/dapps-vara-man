@@ -13,7 +13,7 @@ import { useEffect } from 'react'
 
 export function useGameMessage() {
   const { metadata } = useMetadata(meta)
-  return useSendMessage(ENV.GAME, metadata)
+  return useSendMessage(ENV.GAME, metadata, true)
 }
 
 export function useReadGameState<T>() {
@@ -24,23 +24,19 @@ export function useReadGameState<T>() {
 export function useInitGame() {
   const { setIsAllowed, setIsSettled } = useApp()
   const { account } = useAccount()
-  const { game, setGame, setIsAdmin } = useGame()
+  const { game, setGame, setIsAdmin, setPlayer } = useGame()
   const { state } = useReadGameState<IGameState>()
 
   useEffect(() => {
-    if (game) setIsSettled(true)
-  }, [game, setIsSettled])
+    setIsSettled(!!game)
+    setIsAdmin(account?.decodedAddress === game?.config.operator)
+    setPlayer(
+      game?.players.find(([address]) => address === account?.decodedAddress)
+    )
+  }, [account, game])
 
   useEffect(() => {
     console.log('hello', state)
     setGame(state)
-    if (state && account) {
-      // setPlayers(state.players);
-      setIsAdmin(account.decodedAddress === state.config.operator)
-      // setIsAllowed(account.decodedAddress === state.config.operator);
-    } else {
-      // setPlayers([]);
-      setIsAllowed(false)
-    }
-  }, [state, account, setGame, setIsAllowed, setIsAdmin])
+  }, [state, setGame])
 }

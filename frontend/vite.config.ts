@@ -9,25 +9,25 @@ import eslint from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	resolve: {
-		alias: {
-			'@': path.resolve(__dirname, 'src'),
-			// "@/app": path.resolve(__dirname, "./src/app"),
-			// "@/assets": path.resolve(__dirname, "./src/assets"),
-			// "@/components": path.resolve(__dirname, "./src/components"),
-		},
-	},
-	server: {
-		port: 3000,
-	},
-	preview: {
-		port: 3000,
-	},
-	plugins: [
-		// wasm(), topLevelAwait(),
-		react(),
-		nodePolyfills(),
-		eslint(),
-	],
-	assetsInclude: ['**/*.wasm?inline'],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      // "@/app": path.resolve(__dirname, "./src/app"),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      // "@/components": path.resolve(__dirname, "./src/components"),
+    },
+  },
+  server: {
+    port: 3000,
+  },
+  preview: {
+    port: 3000,
+  },
+  plugins: [
+    // wasm(), topLevelAwait(),
+    react(),
+    nodePolyfills(),
+    eslint(),
+  ],
+  assetsInclude: ['**/*.wasm?inline'],
 })

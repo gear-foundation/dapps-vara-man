@@ -14,7 +14,7 @@ export function LevelsBackground({
         'absolute inset-0 -z-1 aspect-[2490/2904] pointer-events-none',
         '-top-20 xxl:-top-15',
         'h-[135%] xxl:h-[116%]',
-        'left-[-5%] lg:left-0 xl:left-[12.5%] xl2k:left-0',
+        'left-[-5%] xl:left-[12.5%] xl2k:left-0',
         className
       )}
     >

@@ -1,10 +1,9 @@
 import { Icons } from '@/components/ui/icons'
 import { LevelsBackground } from '@/components/sections/levels/levels-background'
 import { LevelsModeContent } from '@/components/sections/levels/levels-mode-content'
+import { LevelsStartAction } from '@/components/sections/levels/levels-start-action'
 
-type LevelsMediumProps = BaseComponentProps & {}
-
-export function LevelsMedium({}: LevelsMediumProps) {
+export function LevelsMedium() {
   return (
     <>
       <div className="relative grow">
@@ -95,12 +94,10 @@ export function LevelsMedium({}: LevelsMediumProps) {
             </li>
           </ul>
         </div>
-        <div className="pl-36 mt-12">
-          <button className="btn space-x-2.5 bg-[#F46402] hover:bg-[#933F0D] transition-colors">
-            <Icons.gameJoystick className="w-5 h-5" />
-            <span>Start game</span>
-          </button>
-        </div>
+        <LevelsStartAction
+          className="bg-[#F46402] hover:bg-[#933F0D]"
+          level="Medium"
+        />
       </LevelsModeContent>
     </>
   )

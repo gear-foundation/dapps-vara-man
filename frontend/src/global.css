@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Kanit';
+  font-weight: 200;
+  src: url('@/assets/fonts/kanit-250.woff2') format('woff2');
+  font-display: swap;
+}
+
 @layer base {
   html {
-    @apply bg-[#1e1e1e] font-kanit;
+    @apply bg-[#1e1e1e] font-kanit selection:bg-primary/20;
   }
 
   body {
@@ -30,8 +37,9 @@
   }
 
   .btn--primary {
-    @apply text-white bg-primary hover:bg-primary/70 active:bg-primary transition-colors;
+    @apply text-white bg-primary hover:bg-[#168b4e] active:bg-primary transition-colors;
   }
+
   .btn--theme-red {
     @apply text-white bg-[#F24A4A] hover:bg-[#A02D30] active:bg-[#F24A4A] transition-colors;
   }
@@ -53,7 +61,7 @@
   }
 
   .btn:disabled {
-    @apply cursor-not-allowed bg-neutral-400
+    @apply cursor-not-allowed bg-neutral-500
   }
 
   .btn--loading {

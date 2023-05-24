@@ -5,13 +5,12 @@ import { useForm } from '@mantine/form'
 import { initialRegister } from '@/app/consts'
 import { hexRequired, isExists } from '@/lib/form-validations'
 import { useGameMessage } from '@/app/hooks/use-game'
+import { cn } from '@/lib/utils'
 
 const validate: Record<string, typeof hexRequired> = {
   wallet: hexRequired,
   nickname: isExists,
 }
-
-type HomeRegisterFormProps = BaseComponentProps & {}
 
 export function HomeRegisterForm() {
   const { isPending, setIsPending } = useApp()
@@ -32,9 +31,16 @@ export function HomeRegisterForm() {
     setIsPending(false)
   }
   const handleSubmit = form.onSubmit((values) => {
+    setIsPending(true)
     console.log(values)
+
     handleMessage(
-      { RegisterPlayer: { name: values.nickname } },
+      {
+        RegisterPlayer: {
+          name: values.nickname,
+          player_address: values.wallet,
+        },
+      },
       { onSuccess, onError }
     )
   })
@@ -62,9 +68,13 @@ export function HomeRegisterForm() {
         <button
           type="submit"
           disabled={Object.keys(errors).length > 0 || isPending}
-          className="btn btn--primary w-full max-w-[205px]"
+          className={cn(
+            'btn btn--primary w-full max-w-[205px]',
+            isPending && 'btn--loading'
+          )}
         >
-          <Icons.gameJoystick className="w-5 h-5 mr-2.5" />
+          {!isPending && <Icons.gameJoystick className="w-5 h-5 mr-2.5" />}
+
           <span>Start game</span>
         </button>
       </div>

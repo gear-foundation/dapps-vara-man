@@ -11,7 +11,7 @@ export const ENV = {
 
 export type IRegisterForm = {
   wallet: HexString | ''
-  nickname: HexString | ''
+  nickname: string
 }
 export const initialRegister: IRegisterForm = {
   wallet: '',

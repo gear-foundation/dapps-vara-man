@@ -2,11 +2,9 @@ import { Icons } from '@/components/ui/icons'
 import { buttonStyles } from '@gear-js/ui'
 import { LevelsBackground } from '@/components/sections/levels/levels-background'
 import { LevelsModeContent } from '@/components/sections/levels/levels-mode-content'
-import { cn } from '@/lib/utils'
+import { LevelsStartAction } from '@/components/sections/levels/levels-start-action'
 
-type LevelsEasyProps = BaseComponentProps & {}
-
-export function LevelsEasy({}: LevelsEasyProps) {
+export function LevelsEasy() {
   return (
     <>
       <div className="relative grow">
@@ -96,12 +94,7 @@ export function LevelsEasy({}: LevelsEasyProps) {
               </div>
             </li>
           </ul>
-          <div className="pl-36 mt-12">
-            <button className={cn('btn space-x-2.5', buttonStyles.primary)}>
-              <Icons.gameJoystick className="w-5 h-5" />
-              <span>Start game</span>
-            </button>
-          </div>
+          <LevelsStartAction className={buttonStyles.primary} level="Easy" />
         </div>
       </LevelsModeContent>
     </>

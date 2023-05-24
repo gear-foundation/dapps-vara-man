@@ -16,7 +16,9 @@ export type IGameState = {
   }
 }
 
-export type IPlayer = {
+export type IPlayer = [HexString, IPlayerInfo]
+
+export type IPlayerInfo = {
   name: string // Имя
   retries: number // Количество попыток(игр)
   claimed_gold_coins: number // Количество заработанных золотых монет
@@ -26,10 +28,10 @@ export type IPlayer = {
 type MAP_WIDTH = 17 // Количество ячеек на карте в длину
 type MAP_HEIGHT = 12 // Количество ячеек на карте в ширину
 
-type Level = 'Easy' | 'Medium' | 'Hard'
+export type IGameLevel = 'Easy' | 'Medium' | 'Hard'
 
 export type IGameInstance = {
-  level: Level // Уровень сложности
+  level: IGameLevel // Уровень сложности
   player_address: HexString // Адрес игрока
   gold_coins: number // Количество золотых монет на карте
   silver_coins: number // Количество серебряных монет на карте
