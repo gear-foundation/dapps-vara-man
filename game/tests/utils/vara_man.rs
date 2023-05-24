@@ -1,5 +1,5 @@
 use super::{ADMIN, VARA_MAN_ID};
-use gstd::prelude::*;
+use gstd::{prelude::*, ActorId};
 use gtest::{Program, System};
 use vara_man_io::{
     Config, GameSeed, Level, Status, VaraMan as VaraManState, VaraManAction, VaraManEvent,
@@ -9,8 +9,15 @@ use vara_man_io::{
 pub trait VaraMan {
     fn vara_man(system: &System) -> Program;
     fn vara_man_with_config(system: &System, config: Config) -> Program;
-    fn register_player(&self, from: u64, name: &str, error: bool);
-    fn start_game(&self, from: u64, level: Level, seed: GameSeed, error: bool);
+    fn register_player(&self, from: u64, name: &str, player_address: ActorId, error: bool);
+    fn start_game(
+        &self,
+        from: u64,
+        level: Level,
+        seed: GameSeed,
+        player_address: ActorId,
+        error: bool,
+    );
     fn claim_reward(
         &self,
         from: u64,
@@ -45,18 +52,34 @@ impl VaraMan for Program<'_> {
         vara_man
     }
 
-    fn register_player(&self, from: u64, name: &str, error: bool) {
+    fn register_player(&self, from: u64, name: &str, player_address: ActorId, error: bool) {
         self.send_tx(
             from,
             VaraManAction::RegisterPlayer {
                 name: name.to_owned(),
+                player_address,
             },
             error,
         );
     }
 
-    fn start_game(&self, from: u64, level: Level, seed: GameSeed, error: bool) {
-        self.send_tx(from, VaraManAction::StartGame { level, seed }, error);
+    fn start_game(
+        &self,
+        from: u64,
+        level: Level,
+        seed: GameSeed,
+        player_address: ActorId,
+        error: bool,
+    ) {
+        self.send_tx(
+            from,
+            VaraManAction::StartGame {
+                level,
+                seed,
+                player_address,
+            },
+            error,
+        );
     }
 
     fn claim_reward(

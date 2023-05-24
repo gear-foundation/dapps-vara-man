@@ -42,8 +42,11 @@ async fn main() {
 
 async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraManEvent {
     match action {
-        VaraManAction::RegisterPlayer { name } => {
-            let actor_id = msg::source();
+        VaraManAction::RegisterPlayer {
+            name,
+            player_address,
+        } => {
+            let actor_id = player_address;
 
             if vara_man.status == Status::Paused {
                 return VaraManEvent::Error("Incorrect whole game status.".to_owned());
@@ -69,9 +72,11 @@ async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraMa
                 VaraManEvent::PlayerRegistered(actor_id)
             }
         }
-        VaraManAction::StartGame { level, seed } => {
-            let player_address = msg::source();
-
+        VaraManAction::StartGame {
+            level,
+            seed,
+            player_address,
+        } => {
             if vara_man.status == Status::Paused {
                 return VaraManEvent::Error("Incorrect whole game status.".to_owned());
             }
@@ -103,7 +108,7 @@ async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraMa
             gold_coins,
         } => {
             if let Some(game) = vara_man.games.get_mut(game_id as usize) {
-                let player_address = msg::source();
+                let player_address = game.player_address;
 
                 // Check that game is not paused
                 if vara_man.status == Status::Paused {
@@ -114,13 +119,6 @@ async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraMa
                 let Some(player) = vara_man.players.get_mut(&player_address) else {
                     return VaraManEvent::Error("Player must be registered to claim.".to_owned());
                 };
-
-                // Check that player address is equal to tx signer(initiator)
-                if player_address != game.player_address {
-                    return VaraManEvent::Error(
-                        "Caller `msg::source` is not eq to actual game player.".to_owned(),
-                    );
-                }
 
                 // Check that game is ended by time
                 if !game.is_timeout(exec::block_timestamp() as i64) {

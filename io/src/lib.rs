@@ -275,9 +275,11 @@ pub enum VaraManAction {
     StartGame {
         level: Level,
         seed: GameSeed,
+        player_address: ActorId,
     },
     RegisterPlayer {
         name: String,
+        player_address: ActorId,
     },
     ClaimReward {
         game_id: u64,

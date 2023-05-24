@@ -61,6 +61,7 @@ pub async fn register_player(
     api: &GearApi,
     program_id: &ActorId,
     name: &str,
+    player_address: ActorId,
     error: bool,
 ) -> gclient::Result<()> {
     let result = send_message(
@@ -68,6 +69,7 @@ pub async fn register_player(
         program_id,
         VaraManAction::RegisterPlayer {
             name: name.to_owned(),
+            player_address,
         },
         0,
     )
@@ -86,9 +88,20 @@ pub async fn start_game(
     program_id: &ActorId,
     level: Level,
     seed: u64,
+    player_address: ActorId,
     error: bool,
 ) -> gclient::Result<()> {
-    let result = send_message(api, program_id, VaraManAction::StartGame { level, seed }, 0).await?;
+    let result = send_message(
+        api,
+        program_id,
+        VaraManAction::StartGame {
+            level,
+            seed,
+            player_address,
+        },
+        0,
+    )
+    .await?;
 
     let event: VaraManEvent =
         VaraManEvent::decode(&mut result.as_ref()).expect("Unexpected invalid result payload.");

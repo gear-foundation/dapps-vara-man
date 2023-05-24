@@ -32,8 +32,14 @@ fn success() {
     let state = vara_man.get_state();
     assert!(state.players.is_empty() && state.games.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
 
     system.spend_blocks(301);
 
@@ -74,8 +80,14 @@ fn success_reward_scale() {
     let state = vara_man.get_state();
     assert!(state.players.is_empty() && state.games.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
 
     system.spend_blocks(301);
 
@@ -115,8 +127,14 @@ fn fail_rewards_already_claimed() {
     let state = vara_man.get_state();
     assert!(state.players.is_empty() && state.games.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
 
     system.spend_blocks(301);
 
@@ -160,8 +178,14 @@ fn fail_coin_amount_is_gt_than_allowed() {
     let state = vara_man.get_state();
     assert!(state.players.is_empty() && state.games.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
 
     system.spend_blocks(301);
 
@@ -197,7 +221,13 @@ fn fail_game_is_not_ended() {
     let state = vara_man.get_state();
     assert!(state.players.is_empty() && state.games.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
     vara_man.claim_reward(utils::PLAYERS[0], 0, 10, 1, true);
 }
