@@ -18,8 +18,14 @@ fn success() {
 
     let player_0_id: ActorId = utils::PLAYERS[0].into();
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
 
     let state = vara_man.get_state();
 
@@ -43,7 +49,13 @@ fn fail_player_must_register() {
     let state = vara_man.get_state();
     assert!(state.games.is_empty());
 
-    vara_man.start_game(utils::PLAYERS[0], Level::Hard, u64::MAX, true);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Hard,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        true,
+    );
 
     let state = vara_man.get_state();
     assert_eq!(state.games.len(), 0);
@@ -60,12 +72,36 @@ fn fail_player_has_exhausted_all_attempts() {
     let state = vara_man.get_state();
     assert!(state.games.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
 
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
-    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, true);
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        false,
+    );
+    vara_man.start_game(
+        utils::PLAYERS[0],
+        Level::Easy,
+        u64::MAX,
+        utils::PLAYERS[0].into(),
+        true,
+    );
 
     let state = vara_man.get_state();
     assert_eq!(state.games.len(), 3);

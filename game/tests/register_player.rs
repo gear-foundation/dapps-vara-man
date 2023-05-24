@@ -17,16 +17,14 @@ fn success() {
     assert!(state.players.is_empty());
 
     let player_0_id: ActorId = utils::PLAYERS[0].into();
-    let player_1_id: ActorId = utils::PLAYERS[1].into();
     let player_2_id: ActorId = utils::PLAYERS[2].into();
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.register_player(utils::PLAYERS[1], "Jack", false);
-    vara_man.register_player(utils::PLAYERS[2], "James", false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.register_player(utils::PLAYERS[1], "Jack", utils::PLAYERS[2].into(), false);
 
     let state = vara_man.get_state();
 
-    assert_eq!(state.players.len(), 3);
+    assert_eq!(state.players.len(), 2);
     assert!(state.players.contains(&(
         player_0_id,
         Player {
@@ -37,18 +35,9 @@ fn success() {
         }
     )));
     assert!(state.players.contains(&(
-        player_1_id,
-        Player {
-            name: "Jack".to_owned(),
-            retries: 0,
-            claimed_gold_coins: 0,
-            claimed_silver_coins: 0,
-        }
-    )));
-    assert!(state.players.contains(&(
         player_2_id,
         Player {
-            name: "James".to_owned(),
+            name: "Jack".to_owned(),
             retries: 0,
             claimed_gold_coins: 0,
             claimed_silver_coins: 0,
@@ -67,8 +56,8 @@ fn fail_player_already_registered() {
     let state = vara_man.get_state();
     assert!(state.players.is_empty());
 
-    vara_man.register_player(utils::PLAYERS[0], "John", false);
-    vara_man.register_player(utils::PLAYERS[0], "John", true);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), false);
+    vara_man.register_player(utils::PLAYERS[0], "John", utils::PLAYERS[0].into(), true);
 
     let state = vara_man.get_state();
     assert_eq!(state.players.len(), 1);
