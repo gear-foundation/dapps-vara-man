@@ -22,10 +22,14 @@ export function useReadGameState<T>() {
 }
 
 export function useInitGame() {
-  const { setIsAllowed } = useApp()
+  const { setIsAllowed, setIsSettled } = useApp()
   const { account } = useAccount()
-  const { setGame, setIsAdmin } = useGame()
+  const { game, setGame, setIsAdmin } = useGame()
   const { state } = useReadGameState<IGameState>()
+
+  useEffect(() => {
+    if (game) setIsSettled(true)
+  }, [game, setIsSettled])
 
   useEffect(() => {
     console.log('hello', state)

@@ -13,7 +13,7 @@ export function HeaderAdmin({}: HeaderAdminProps) {
   const onSuccess = () => setIsPending(false)
 
   return (
-    <div className="ml-auto mr-4 space-x-4">
+    <>
       {game?.status === 'Paused' && (
         <button
           type="button"
@@ -46,6 +46,6 @@ export function HeaderAdmin({}: HeaderAdminProps) {
           <span>Deactivate game</span>
         </button>
       )}
-    </div>
+    </>
   )
 }
