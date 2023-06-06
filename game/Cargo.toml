@@ -7,7 +7,7 @@ authors = ["Gear Technologies"]
 
 [dependencies]
 gstd = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
-hashbrown = "0.13.2"
+hashbrown = "0.14.0"
 vara-man-io = { path = "../io" }
 
 [dev-dependencies]
