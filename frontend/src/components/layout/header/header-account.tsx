@@ -6,9 +6,12 @@ import { SelectAccountPopup } from '@/components/popups/select-account-popup'
 
 export const AccountComponent = () => {
   const { account, accounts } = useAccount()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
-  const openModal = () => setIsModalOpen(true)
+  const openModal = () => {
+    setIsOpen(true)
+    console.log('click')
+  }
 
   return (
     <>
@@ -20,15 +23,16 @@ export const AccountComponent = () => {
             onClick={openModal}
             simple
           />
-          <SelectAccountPopup
-            accounts={accounts}
-            setIsOpen={setIsModalOpen}
-            isOpen={isModalOpen}
-          />
         </>
       ) : (
         <Button text="Connect Account" onClick={openModal} color="lightGreen" />
       )}
+
+      <SelectAccountPopup
+        accounts={accounts}
+        setIsOpen={setIsOpen}
+        isOpen={isOpen}
+      />
     </>
   )
 }
