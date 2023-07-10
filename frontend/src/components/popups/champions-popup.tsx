@@ -5,7 +5,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { buttonStyles } from '@gear-js/ui'
-import { Icons } from '../ui/icons'
+import { XIcon } from 'lucide-react'
 
 type ChampionsPopupProps = PopupContainerProps & {}
 
@@ -34,7 +34,7 @@ export function ChampionsPopup({
             )}
             onClick={onClose}
           >
-            <Icons.close className="w-5 h-5 text-white/80" />
+            <XIcon className="w-5 h-5 text-white/80" />
             <span className="leading-4">Close</span>
           </button>
         </div>

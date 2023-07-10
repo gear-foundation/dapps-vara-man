@@ -1,8 +1,8 @@
 import { Dialog } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Icons } from '../ui/icons'
 import { cn } from '@/lib/utils'
+import { XIcon } from 'lucide-react'
 
 export type PopupContainerProps = BaseComponentProps & {
   setIsOpen: Dispatch<SetStateAction<boolean>>
@@ -89,7 +89,7 @@ export function PopupContainer({
                       onClick={() => setIsOpen((_) => !_)}
                       type="button"
                     >
-                      <Icons.close className="w-6 h-6" name="close" />
+                      <XIcon className="w-6 h-6" />
                     </button>
                   </div>
                 </div>
