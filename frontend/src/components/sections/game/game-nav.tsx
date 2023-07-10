@@ -1,5 +1,3 @@
-import { cn } from '@/app/utils'
-import { buttonStyles } from '@gear-js/ui'
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'
 import { GameNavItem } from '@/components/sections/game/game-nav-item'

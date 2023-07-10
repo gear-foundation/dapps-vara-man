@@ -3,9 +3,10 @@ import { lazy, Suspense } from 'react'
 import { useInitGame } from '@/app/hooks/use-game'
 
 const routes = [
-  { path: '/', Page: lazy(() => import('./home')) },
+  { path: '/', Page: lazy(() => import('./game')) },
   { path: '/levels', Page: lazy(() => import('./levels')) },
   { path: '/rules', Page: lazy(() => import('./rules')) },
+  { path: '/home', Page: lazy(() => import('./home')) },
 ]
 
 export const Routing = () => {

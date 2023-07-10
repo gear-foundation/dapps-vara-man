@@ -1,9 +1,9 @@
 import { GameNav } from '@/components/sections/game/game-nav'
 import { GameField } from '@/components/sections/game/game-field'
 
-type GameInitProps = BaseComponentProps & {}
+type GameInitProps = {}
 
-export function GameInit({ children }: GameInitProps) {
+export function GameInit({}: GameInitProps) {
   return (
     <div>
       <GameNav />
