@@ -3,9 +3,9 @@ import { Icons } from '@/components/ui/icons'
 import { useApp } from '@/app/context/ctx-app'
 import { useForm } from '@mantine/form'
 import { initialRegister } from '@/app/consts'
-import { hexRequired, isExists } from '@/lib/form-validations'
+import { hexRequired, isExists } from '@/app/utils/form-validations'
 import { useGameMessage } from '@/app/hooks/use-game'
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 
 const validate: Record<string, typeof hexRequired> = {
   wallet: hexRequired,

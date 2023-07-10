@@ -3,7 +3,7 @@ import {
   PopupContainerProps,
 } from '@/components/common/popup-container'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 import { buttonStyles } from '@gear-js/ui'
 import { XIcon } from 'lucide-react'
 

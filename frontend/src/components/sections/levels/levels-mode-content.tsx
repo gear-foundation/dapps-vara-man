@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 
 type LevelsModeContentProps = BaseComponentProps & {
   title: string

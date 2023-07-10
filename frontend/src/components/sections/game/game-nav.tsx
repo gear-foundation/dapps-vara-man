@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 import { buttonStyles } from '@gear-js/ui'
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 import { Icons } from '@/components/ui/icons'
 import { useLevelMessage } from '@/app/hooks/use-level'
 import { IGameLevel } from '@/app/types/game'

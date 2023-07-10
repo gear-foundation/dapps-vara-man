@@ -1,7 +1,7 @@
 import { useAccount } from '@gear-js/react-hooks'
 import { buttonStyles } from '@gear-js/ui'
 import { SpriteIcon } from '@/components/ui/sprite-icon'
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 
 export function AccountGasBalance() {
   const { account } = useAccount()

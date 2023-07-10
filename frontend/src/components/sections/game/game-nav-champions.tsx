@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 import { buttonStyles } from '@gear-js/ui'
 import { useState } from 'react'
 import { ChampionsPopup } from '@/components/popups/champions-popup'

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 import { ReactNode } from 'react'
 
 type GameNavItemProps = BaseComponentProps & {

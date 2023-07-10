@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { cn } from '@/lib/utils'
+import { cn } from '@/app/utils'
 import { XIcon } from 'lucide-react'
 
 export type PopupContainerProps = BaseComponentProps & {

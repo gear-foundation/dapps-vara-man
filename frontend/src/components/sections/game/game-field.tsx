@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { createGameField } from '@/components/sections/game/game-pacman'
-import { sleep } from '@/lib/utils'
+import { sleep } from '@/app/utils'
 
 type GameFieldProps = BaseComponentProps & {}
 
