@@ -1,6 +1,6 @@
 import { useAccount } from '@gear-js/react-hooks'
 import { buttonStyles } from '@gear-js/ui'
-import { Icon } from '@/components/ui/icon'
+import { SpriteIcon } from '@/components/ui/sprite-icon'
 import { cn } from '@/lib/utils'
 
 export function AccountGasBalance() {
@@ -10,7 +10,7 @@ export function AccountGasBalance() {
     <div className="flex space-x-4 shrink-0">
       <div>
         <div className={cn('btn group !p-2.5', buttonStyles.lightGreen)}>
-          <Icon name="test-balance" width={20} height={20} />
+          <SpriteIcon name="test-balance" width={20} height={20} />
         </div>
       </div>
       <p className="shrink-0 grid grid-cols-[auto_auto] gap-x-1 font-kanit">

@@ -1,4 +1,4 @@
-import { Icon } from '@/components/ui/icon'
+import { SpriteIcon } from '@/components/ui/sprite-icon'
 import { Link } from 'react-router-dom'
 
 const socials = [
@@ -19,7 +19,7 @@ export const Footer = () => (
             rel="noreferrer"
             className="text-[#BCBCBC] hover:text-white transition-colors"
           >
-            <Icon name={icon} className="w-6 h-6" />
+            <SpriteIcon name={icon} className="w-6 h-6" />
           </a>
         </li>
       ))}

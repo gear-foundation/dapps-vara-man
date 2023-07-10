@@ -5,7 +5,7 @@ import { useAccount, useAlert } from '@gear-js/react-hooks'
 import { copyToClipboard, isLoggedIn } from '@/lib/utils'
 import { LOCAL_STORAGE } from '@/app/consts'
 import { AccountButton } from '@/components/common/account-button'
-import { Icon } from '@/components/ui/icon'
+import { SpriteIcon } from '@/components/ui/sprite-icon'
 
 type Props = {
   list: InjectedAccountWithMeta[]
@@ -39,7 +39,7 @@ export const AccountsList = ({ list, onChange }: Props) => {
             onClick={() => onClick(account)}
           />
           <Button
-            icon={() => <Icon name="copy" className="w-5 h-5" />}
+            icon={() => <SpriteIcon name="copy" className="w-5 h-5" />}
             color="transparent"
             onClick={() => onCopy(account.address)}
           />
