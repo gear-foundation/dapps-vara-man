@@ -19,9 +19,7 @@ export const Routing = () => {
           key={path}
           path={path}
           element={
-            <Suspense fallback={<>Page {Page.name} is loading...</>}>
-              <Page />
-            </Suspense>
+            <Page />
           }
         />
       ))}

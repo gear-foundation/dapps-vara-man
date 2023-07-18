@@ -1,12 +1,14 @@
 {
   "name": "smart-contract-academy-frontend",
+  "homepage": ".",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "tsc && vite build && npx thirdweb@latest upload dist"
   },
   "dependencies": {
     "@gear-js/api": "0.31.1",
