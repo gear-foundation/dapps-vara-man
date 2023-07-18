@@ -1,14 +1,17 @@
 import { GameNav } from '@/components/sections/game/game-nav'
 import { GameField } from '@/components/sections/game/game-field'
 import GameCore from './core'
+import { GameProviderScore } from '@/app/context/ctx-game-score'
 
 type GameInitProps = {}
 
-export function GameInit({}: GameInitProps) {
+export function GameInit({ }: GameInitProps) {
   return (
     <div>
-      <GameNav />
-      <GameCore />
+      <GameProviderScore>
+        <GameNav />
+        <GameCore />
+      </GameProviderScore>
     </div>
   )
 }

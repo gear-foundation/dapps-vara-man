@@ -1,3 +1,6 @@
+import { GameContext } from '@/app/context/ctx-game-score'
+import { useContext } from 'react'
+
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'
 import { GameNavItem } from '@/components/sections/game/game-nav-item'
@@ -7,7 +10,9 @@ const data = gameNavData
 
 type GameNavProps = BaseComponentProps & {}
 
-export function GameNav({}: GameNavProps) {
+export function GameNav({ }: GameNavProps) {
+  const { eatenCoins } = useContext(GameContext);
+
   return (
     <div className="relative font-kanit">
       <GameNavBackground />
@@ -43,7 +48,7 @@ export function GameNav({}: GameNavProps) {
               18
             </GameNavItem>
             <GameNavItem icon={data[3].icon} className={data[3].color}>
-              28
+              {eatenCoins}
             </GameNavItem>
           </div>
 

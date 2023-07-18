@@ -1,11 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import TileMap from './TileMap.js';
 import style from './game.module.scss'
+import { GameContext } from '@/app/context/ctx-game-score.js';
 
 const tileSize = 32;
 const velocity = 2;
 
-const GameCore: React.FC = () => {
+const GameCore = () => {
+    const { incrementCoins } = useContext(GameContext);
+
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const tileMapRef = useRef<TileMap | null>(null);
     const gameRef = useRef<any>(null);
@@ -25,6 +28,11 @@ const GameCore: React.FC = () => {
 
 
         const gameLoop = () => {
+            if (tileMap && tileMap.isCoinEaten()) {
+                console.log('incrementCoins')
+                incrementCoins()
+            }
+
             const canvas = canvasRef.current;
             const ctx = canvas!.getContext('2d');
 
