@@ -62,7 +62,6 @@ export default class Character {
       this.animate()
     }
     this.eatDot()
-    this.eatPowerDot()
     this.eatGhost(enemies)
 
     const size = this.tileSize
@@ -208,27 +207,6 @@ export default class Character {
     this.tileMap.eatDot(this.x, this.y)
   }
 
-  private eatPowerDot() {
-    if (this.tileMap.eatPowerDot(this.x, this.y)) {
-      this.powerDotActive = true
-      this.powerDotAboutToExpire = false
-      this.timers.forEach((timer) => clearTimeout(timer))
-      this.timers = []
-
-      let powerDotTimer: number = window.setTimeout(() => {
-        this.powerDotActive = false
-        this.powerDotAboutToExpire = false
-      }, 1000 * 6)
-
-      this.timers.push(powerDotTimer)
-
-      let powerDotAboutToExpireTimer: number = window.setTimeout(() => {
-        this.powerDotAboutToExpire = true
-      }, 1000 * 3)
-
-      this.timers.push(powerDotAboutToExpireTimer)
-    }
-  }
 
   private eatGhost(enemies: any[]) {
     if (this.powerDotActive) {

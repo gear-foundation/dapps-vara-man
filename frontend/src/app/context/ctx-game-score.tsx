@@ -1,28 +1,35 @@
 import React, { createContext, useState } from 'react';
 
 export interface GameContextProps {
-    eatenCoins: number;
-    incrementCoins: () => void;
+    silverCoins: number;
+    goldCoins: number;
+    incrementCoins: (coinType: 'silver' | 'gold') => void;
 }
 
 interface GameProviderProps {
-    children: React.ReactNode
+    children: React.ReactNode;
 }
 
 export const GameContext = createContext<GameContextProps>({
-    eatenCoins: 0,
+    silverCoins: 0,
+    goldCoins: 0,
     incrementCoins: () => { },
 });
 
 export const GameProviderScore = ({ children }: GameProviderProps) => {
-    const [eatenCoins, setEatenCoins] = useState(0);
+    const [silverCoins, setSilverCoins] = useState(0);
+    const [goldCoins, setGoldCoins] = useState(0);
 
-    const incrementCoins = () => {
-        setEatenCoins((prevCoins) => prevCoins + 1);
+    const incrementCoins = (coinType: 'silver' | 'gold') => {
+        if (coinType === 'silver') {
+            setSilverCoins((prevCoins) => prevCoins + 1);
+        } else if (coinType === 'gold') {
+            setGoldCoins((prevCoins) => prevCoins + 1);
+        }
     };
 
     return (
-        <GameContext.Provider value={{ eatenCoins, incrementCoins }}>
+        <GameContext.Provider value={{ silverCoins, goldCoins, incrementCoins }}>
             {children}
         </GameContext.Provider>
     );

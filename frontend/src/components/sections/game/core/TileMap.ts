@@ -17,6 +17,7 @@ class TileMap {
   private map: number[][]
 
   private coinEaten: boolean
+  private coinType: 'silver' | 'gold' | null
 
   constructor(tileSize: number) {
     this.tileSize = tileSize
@@ -32,6 +33,7 @@ class TileMap {
     this.powerDotAnimationTimer = this.powerDotAnimationTimerDefault
 
     this.coinEaten = false
+    this.coinType = null
 
     //1 - wall
     //0 - dots
@@ -221,10 +223,20 @@ class TileMap {
     ) {
       if (this.map[row][column] === 0) {
         this.map[row][column] = 5
+        this.coinType = 'silver'
+        this.coinEaten = true
+        return true
+      }
+
+      if (this.map[row][column] === 7) {
+        this.map[row][column] = 5
+
+        this.coinType = 'gold'
         this.coinEaten = true
         return true
       }
     }
+
     this.coinEaten = false
     return false
   }
@@ -233,25 +245,8 @@ class TileMap {
     return this.coinEaten
   }
 
-  public eatPowerDot(x: number, y: number): boolean {
-    const tileSize = this.tileSize
-    const row = Math.floor(y / tileSize)
-    const column = Math.floor(x / tileSize)
-
-    if (
-      row >= 0 &&
-      row < this.map.length &&
-      column >= 0 &&
-      column < this.map[0].length
-    ) {
-      const tile = this.map[row][column]
-      if (tile === 7) {
-        this.map[row][column] = 5
-        return true
-      }
-    }
-
-    return false
+  public getCoinEaten() {
+    return this.coinType
   }
 }
 

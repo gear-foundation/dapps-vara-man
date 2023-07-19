@@ -11,7 +11,7 @@ const data = gameNavData
 type GameNavProps = BaseComponentProps & {}
 
 export function GameNav({ }: GameNavProps) {
-  const { eatenCoins } = useContext(GameContext);
+  const { silverCoins, goldCoins } = useContext(GameContext);
 
   return (
     <div className="relative font-kanit">
@@ -45,10 +45,10 @@ export function GameNav({ }: GameNavProps) {
         <div className="flex space-x-10">
           <div className="flex space-x-8">
             <GameNavItem icon={data[2].icon} className={data[2].color}>
-              18
+              {goldCoins}
             </GameNavItem>
             <GameNavItem icon={data[3].icon} className={data[3].color}>
-              {eatenCoins}
+              {silverCoins}
             </GameNavItem>
           </div>
 

@@ -29,8 +29,8 @@ const GameCore = () => {
 
         const gameLoop = () => {
             if (tileMap && tileMap.isCoinEaten()) {
-                console.log('incrementCoins')
-                incrementCoins()
+                const coin = tileMap.getCoinEaten()
+                coin && incrementCoins(coin)
             }
 
             const canvas = canvasRef.current;
