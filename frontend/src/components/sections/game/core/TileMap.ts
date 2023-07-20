@@ -105,11 +105,12 @@ class TileMap {
   // }
 
   public getCharacter(velocity: number): Character | undefined {
+
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         let tile = this.map[row][column]
         if (tile === 4) {
-          this.map[row][column] = 5
+          this.map[row][column] = 4
           return new Character(
             column * this.tileSize,
             row * this.tileSize,
@@ -130,7 +131,7 @@ class TileMap {
       for (let column = 0; column < this.map[row].length; column++) {
         const tile = this.map[row][column]
         if (tile === 6) {
-          this.map[row][column] = 0
+          this.map[row][column] = 6
           enemies.push(
             new Enemy(
               column * this.tileSize,

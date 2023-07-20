@@ -18,7 +18,13 @@ export default class Enemy {
   scaredGhost2!: HTMLImageElement
   image!: HTMLImageElement
 
-  constructor(x: number, y: number, tileSize: number, velocity: number, tileMap: any) {
+  constructor(
+    x: number,
+    y: number,
+    tileSize: number,
+    velocity: number,
+    tileMap: any
+  ) {
     this.x = x
     this.y = y
     this.tileSize = tileSize
@@ -61,32 +67,7 @@ export default class Enemy {
   }
 
   private setImage(ctx: CanvasRenderingContext2D, character: any) {
-    if (character.powerDotActive) {
-      this.setImageWhenPowerDotIsActive(character)
-    } else {
-      this.image = this.normalGhost
-    }
-    ctx.drawImage(
-      this.image,
-      this.x - 5,
-      this.y - 20
-    )
-  }
-
-  private setImageWhenPowerDotIsActive(character: any) {
-    if (character.powerDotAboutToExpire) {
-      this.scaredAboutToExpireTimer--
-      if (this.scaredAboutToExpireTimer === 0) {
-        this.scaredAboutToExpireTimer = this.scaredAboutToExpireTimerDefault
-        if (this.image === this.scaredGhost) {
-          this.image = this.scaredGhost2
-        } else {
-          this.image = this.scaredGhost
-        }
-      }
-    } else {
-      this.image = this.scaredGhost
-    }
+    ctx.drawImage(this.image, this.x - 5, this.y - 20)
   }
 
   private changeDirection() {

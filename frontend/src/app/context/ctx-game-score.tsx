@@ -4,6 +4,8 @@ export interface GameContextProps {
     silverCoins: number;
     goldCoins: number;
     incrementCoins: (coinType: 'silver' | 'gold') => void;
+    lives: number;
+    decrementLives: () => void;
 }
 
 interface GameProviderProps {
@@ -14,11 +16,14 @@ export const GameContext = createContext<GameContextProps>({
     silverCoins: 0,
     goldCoins: 0,
     incrementCoins: () => { },
+    lives: 3,
+    decrementLives: () => { },
 });
 
 export const GameProviderScore = ({ children }: GameProviderProps) => {
     const [silverCoins, setSilverCoins] = useState(0);
     const [goldCoins, setGoldCoins] = useState(0);
+    const [lives, setLives] = useState(3);
 
     const incrementCoins = (coinType: 'silver' | 'gold') => {
         if (coinType === 'silver') {
@@ -28,8 +33,12 @@ export const GameProviderScore = ({ children }: GameProviderProps) => {
         }
     };
 
+    const decrementLives = () => {
+        setLives((prevLives) => prevLives - 1);
+    };
+
     return (
-        <GameContext.Provider value={{ silverCoins, goldCoins, incrementCoins }}>
+        <GameContext.Provider value={{ silverCoins, goldCoins, incrementCoins, lives, decrementLives }}>
             {children}
         </GameContext.Provider>
     );
