@@ -15,6 +15,12 @@ class TileMap {
   private powerDotAnimationTimerDefault: number
   private powerDotAnimationTimer: number
   private map: number[][]
+  private initialMap: number[][] // Store the initial map data
+  private collectedCoins: {
+    row: number
+    column: number
+    type: 'silver' | 'gold'
+  }[] = []
 
   private coinEaten: boolean
   private coinType: 'silver' | 'gold' | null
@@ -42,6 +48,12 @@ class TileMap {
     //6 - enemy
     //7 - power dot
     this.map = smallCoinsMap
+    this.initialMap = this.map.map((row) => row.slice())
+  }
+
+  // Add the resetMap method to reset the entire map, keeping the collected coins
+  public resetMap() {
+    this.map = this.initialMap.map((row) => row.slice())
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
@@ -50,13 +62,32 @@ class TileMap {
         let tile = this.map[row][column]
         if (tile === 0) {
           this.drawDot(ctx, column, row, this.tileSize)
-        }
-
-        if (tile === 7) {
+        } else if (tile === 7) {
           this.drawPowerDot(ctx, column, row, this.tileSize)
+        } else if (tile === 5) {
+          // Draw an empty tile for the eaten coins
+          // Optionally, you can add code here to draw a visual representation of the collected coins.
+          // For simplicity, I'll use a blank tile (5) as you requested.
+          ctx.clearRect(
+            column * this.tileSize,
+            row * this.tileSize,
+            this.tileSize,
+            this.tileSize
+          )
         }
       }
     }
+
+    // Optionally, you can add code here to draw a visual representation of the collected coins.
+    // For simplicity, I'll use a blank tile (5) as you requested.
+    this.collectedCoins.forEach((coin) => {
+      ctx.clearRect(
+        coin.column * this.tileSize,
+        coin.row * this.tileSize,
+        this.tileSize,
+        this.tileSize
+      )
+    })
   }
 
   private drawDot(
@@ -105,12 +136,11 @@ class TileMap {
   // }
 
   public getCharacter(velocity: number): Character | undefined {
-
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         let tile = this.map[row][column]
         if (tile === 4) {
-          this.map[row][column] = 4
+          this.map[row][column] = 5
           return new Character(
             column * this.tileSize,
             row * this.tileSize,
@@ -131,7 +161,7 @@ class TileMap {
       for (let column = 0; column < this.map[row].length; column++) {
         const tile = this.map[row][column]
         if (tile === 6) {
-          this.map[row][column] = 6
+          this.map[row][column] = 0
           enemies.push(
             new Enemy(
               column * this.tileSize,
@@ -226,14 +256,15 @@ class TileMap {
         this.map[row][column] = 5
         this.coinType = 'silver'
         this.coinEaten = true
+        this.collectedCoins.push({ row, column, type: 'silver' })
         return true
       }
 
       if (this.map[row][column] === 7) {
         this.map[row][column] = 5
-
         this.coinType = 'gold'
         this.coinEaten = true
+        this.collectedCoins.push({ row, column, type: 'gold' })
         return true
       }
     }

@@ -10,9 +10,10 @@ interface GameActions {
 class GameEngine {
   private canvas: HTMLCanvasElement | null
   private tileMap: TileMap
-  private game: Character | undefined
+  private character: Character | undefined
   private enemies: Enemy[] = []
   private gameActions: GameActions
+  // private isRestartGame: boolean
 
   constructor(
     canvas: HTMLCanvasElement | null,
@@ -22,9 +23,10 @@ class GameEngine {
   ) {
     this.canvas = canvas
     this.tileMap = new TileMap(tileSize)
-    this.game = this.tileMap.getCharacter(velocity)
+    this.character = this.tileMap.getCharacter(velocity)
     this.enemies = this.tileMap.getEnemies(velocity)
     this.gameActions = gameActions
+    // this.isRestartGame = false
   }
 
   animate() {
@@ -35,7 +37,7 @@ class GameEngine {
   }
 
   gameOver() {
-    return this.enemies.some((enemy) => enemy.collideWith(this.game))
+    return this.enemies.some((enemy) => enemy.collideWith(this.character))
   }
 
   gameWin() {
@@ -44,15 +46,16 @@ class GameEngine {
 
   gameLoop() {
     const ctx = this.canvas!.getContext('2d')
-    if (!ctx || !this.game || !this.canvas) return
+    if (!ctx || !this.character || !this.canvas) return
     ctx.imageSmoothingEnabled = false
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
     this.tileMap.draw(ctx)
     this.drawGameEnd()
-    this.game?.draw(ctx, this.pause(), this.enemies)
-    this.enemies.forEach((enemy) => enemy.draw(ctx, this.pause(), this.game))
+
+    this.character.draw(ctx, this.pause(), this.enemies)
+    this.enemies.forEach((enemy) => enemy.draw(ctx, this.pause()))
 
     if (this.tileMap && this.tileMap.isCoinEaten()) {
       const coin = this.tileMap.getCoinEaten()
@@ -67,7 +70,7 @@ class GameEngine {
   drawGameEnd() {
     if (this.gameOver() || this.gameWin()) {
       const isCollideWith = this.enemies.some((enemy) =>
-        enemy.collideWith(this.game)
+        enemy.collideWith(this.character)
       )
       if (isCollideWith) {
         this.gameActions.decrementLives()
@@ -83,25 +86,10 @@ class GameEngine {
   restart() {
     console.log('Restarting the game...')
 
-    // Reset any game-related variables to their initial state
-    this.game = this.tileMap.getCharacter(2)
+    this.tileMap.resetMap() // Reset the entire map while keeping collected coins
+
+    this.character = this.tileMap.getCharacter(2)
     this.enemies = this.tileMap.getEnemies(2)
-
-    if (!this.game || !this.canvas) return
-
-    // Redraw the initial game state
-    const ctx = this.canvas!.getContext('2d')
-    if (ctx && this.canvas) {
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-      this.tileMap.draw(ctx)
-
-      this.drawGameEnd()
-      this.game.draw(ctx, this.pause(), this.enemies)
-      this.enemies.forEach((enemy) => enemy.draw(ctx, this.pause(), this.game))
-    }
-
-    // Restart any necessary game logic or animations
-    // Example: this.timer = setInterval(() => { /* game logic */ }, 1000);
   }
 }
 

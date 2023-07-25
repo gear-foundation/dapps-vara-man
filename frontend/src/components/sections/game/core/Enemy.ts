@@ -44,29 +44,40 @@ export default class Enemy {
     this.scaredAboutToExpireTimer = this.scaredAboutToExpireTimerDefault
   }
 
-  draw(ctx: CanvasRenderingContext2D, pause: boolean, character: any) {
+  draw(ctx: CanvasRenderingContext2D, pause: boolean) {
     if (!pause) {
       this.move()
       this.changeDirection()
     }
-    this.setImage(ctx, character)
+    this.setImage(ctx)
   }
 
   collideWith(character: any) {
-    const size = this.tileSize / 2
-    if (
-      this.x < character.x + size &&
-      this.x + size > character.x &&
-      this.y < character.y + size &&
-      this.y + size > character.y
-    ) {
-      return true
-    } else {
-      return false
+    const enemyBoundingBox = {
+      x: this.x,
+      y: this.y,
+      width: this.image.width, // Replace with the actual enemy sprite width
+      height: this.image.height, // Replace with the actual enemy sprite height
     }
+
+    const characterBoundingBox = {
+      x: character.x,
+      y: character.y,
+      width: 56, // Replace with the actual character sprite width
+      height: 56, // Replace with the actual character sprite height
+    }
+
+    return (
+      enemyBoundingBox.x <
+        characterBoundingBox.x + characterBoundingBox.width &&
+      enemyBoundingBox.x + enemyBoundingBox.width > characterBoundingBox.x &&
+      enemyBoundingBox.y <
+        characterBoundingBox.y + characterBoundingBox.height &&
+      enemyBoundingBox.y + enemyBoundingBox.height > characterBoundingBox.y
+    )
   }
 
-  private setImage(ctx: CanvasRenderingContext2D, character: any) {
+  private setImage(ctx: CanvasRenderingContext2D) {
     ctx.drawImage(this.image, this.x - 5, this.y - 20)
   }
 
