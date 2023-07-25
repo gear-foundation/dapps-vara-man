@@ -13,7 +13,6 @@ class GameEngine {
   private character: Character | undefined
   private enemies: Enemy[] = []
   private gameActions: GameActions
-  // private isRestartGame: boolean
 
   constructor(
     canvas: HTMLCanvasElement | null,
@@ -26,7 +25,6 @@ class GameEngine {
     this.character = this.tileMap.getCharacter(velocity)
     this.enemies = this.tileMap.getEnemies(velocity)
     this.gameActions = gameActions
-    // this.isRestartGame = false
   }
 
   animate() {
@@ -84,9 +82,7 @@ class GameEngine {
   }
 
   restart() {
-    console.log('Restarting the game...')
-
-    this.tileMap.resetMap() // Reset the entire map while keeping collected coins
+    this.tileMap.resetMap()
 
     this.character = this.tileMap.getCharacter(2)
     this.enemies = this.tileMap.getEnemies(2)

@@ -26,10 +26,7 @@ const GameCore = () => {
 
         gameEngine.setCanvasSize();
 
-
-
         animate();
-
         requestAnimationFrame(animate);
     }, []);
 

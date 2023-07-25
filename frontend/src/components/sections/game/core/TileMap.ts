@@ -15,7 +15,7 @@ class TileMap {
   private powerDotAnimationTimerDefault: number
   private powerDotAnimationTimer: number
   private map: number[][]
-  private initialMap: number[][] // Store the initial map data
+  private initialMap: number[][]
   private collectedCoins: {
     row: number
     column: number
@@ -51,7 +51,6 @@ class TileMap {
     this.initialMap = this.map.map((row) => row.slice())
   }
 
-  // Add the resetMap method to reset the entire map, keeping the collected coins
   public resetMap() {
     this.map = this.initialMap.map((row) => row.slice())
   }
@@ -66,8 +65,6 @@ class TileMap {
           this.drawPowerDot(ctx, column, row, this.tileSize)
         } else if (tile === 5) {
           // Draw an empty tile for the eaten coins
-          // Optionally, you can add code here to draw a visual representation of the collected coins.
-          // For simplicity, I'll use a blank tile (5) as you requested.
           ctx.clearRect(
             column * this.tileSize,
             row * this.tileSize,
@@ -78,8 +75,6 @@ class TileMap {
       }
     }
 
-    // Optionally, you can add code here to draw a visual representation of the collected coins.
-    // For simplicity, I'll use a blank tile (5) as you requested.
     this.collectedCoins.forEach((coin) => {
       ctx.clearRect(
         coin.column * this.tileSize,
