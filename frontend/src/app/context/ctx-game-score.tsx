@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export interface GameContextProps {
     silverCoins: number;
@@ -6,6 +6,7 @@ export interface GameContextProps {
     incrementCoins: (coinType: 'silver' | 'gold') => void;
     lives: number;
     decrementLives: () => void;
+    timer: number;
 }
 
 interface GameProviderProps {
@@ -18,12 +19,14 @@ export const GameContext = createContext<GameContextProps>({
     incrementCoins: () => { },
     lives: 3,
     decrementLives: () => { },
+    timer: 60 * 10
 });
 
 export const GameProviderScore = ({ children }: GameProviderProps) => {
     const [silverCoins, setSilverCoins] = useState(0);
     const [goldCoins, setGoldCoins] = useState(0);
     const [lives, setLives] = useState(3);
+    const [timer, setTimer] = useState(60 * 10);
 
     const incrementCoins = (coinType: 'silver' | 'gold') => {
         if (coinType === 'silver') {
@@ -37,8 +40,24 @@ export const GameProviderScore = ({ children }: GameProviderProps) => {
         setLives((prevLives) => prevLives - 1);
     };
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimer((prevTimer) => Math.max(prevTimer - 1, 0));
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        if (timer <= 0) {
+            setLives(0);
+        }
+    }, [timer]);
+
     return (
-        <GameContext.Provider value={{ silverCoins, goldCoins, incrementCoins, lives, decrementLives }}>
+        <GameContext.Provider
+            value={{ silverCoins, goldCoins, incrementCoins, lives, decrementLives, timer }}
+        >
             {children}
         </GameContext.Provider>
     );

@@ -1,5 +1,5 @@
 import { GameContext } from '@/app/context/ctx-game-score'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'
@@ -11,7 +11,25 @@ const data = gameNavData
 type GameNavProps = BaseComponentProps & {}
 
 export function GameNav({ }: GameNavProps) {
-  const { silverCoins, goldCoins, lives } = useContext(GameContext);
+  const { silverCoins, goldCoins, lives, timer } = useContext(GameContext);
+  const [formattedTimer, setFormattedTimer] = useState('00:00');
+
+  useEffect(() => {
+    // Function to format the timer value to "mm:ss" format
+    const formatTimer = (seconds: number) => {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+      return `${formattedMinutes}:${formattedSeconds}`;
+    };
+
+    if (timer > 0) {
+      setFormattedTimer(formatTimer(timer - 1));
+    }
+
+  }, [timer]);
+
 
   return (
     <div className="relative font-kanit">
@@ -26,7 +44,7 @@ export function GameNav({ }: GameNavProps) {
               {lives}
             </GameNavItem>
             <GameNavItem icon={data[1].icon} className={data[1].color}>
-              9:59
+              {formattedTimer}
             </GameNavItem>
           </div>
         </div>

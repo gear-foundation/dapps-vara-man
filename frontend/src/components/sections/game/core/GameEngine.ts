@@ -13,6 +13,8 @@ class GameEngine {
   private character: Character | undefined
   private enemies: Enemy[] = []
   private gameActions: GameActions
+  private animationFrameId: number | null = null
+  private gameLoopTimer: number | null = null
 
   constructor(
     canvas: HTMLCanvasElement | null,
@@ -30,7 +32,7 @@ class GameEngine {
   animate() {
     this.gameLoop()
     if (!this.gameWin()) {
-      requestAnimationFrame(this.animate.bind(this))
+      this.animationFrameId = requestAnimationFrame(this.animate.bind(this))
     }
   }
 
@@ -39,7 +41,7 @@ class GameEngine {
   }
 
   gameWin() {
-    return !this.gameWin && this.tileMap.didWin()
+    return !this.gameOver() && this.tileMap.didWin() // Use gameOver() instead of gameWin()
   }
 
   gameLoop() {
@@ -58,6 +60,26 @@ class GameEngine {
     if (this.tileMap && this.tileMap.isCoinEaten()) {
       const coin = this.tileMap.getCoinEaten()
       coin && this.gameActions.incrementCoins(coin)
+    }
+  }
+
+  destroy() {
+    // Stop the game loop and cancel any pending animation frames
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId)
+      this.animationFrameId = null
+    }
+
+    // Clear any existing timers
+    if (this.gameLoopTimer !== null) {
+      clearTimeout(this.gameLoopTimer)
+      this.gameLoopTimer = null
+    }
+
+    // Reset the canvas to a blank state if required
+    const ctx = this.canvas?.getContext('2d')
+    if (ctx && this.canvas) {
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }
   }
 

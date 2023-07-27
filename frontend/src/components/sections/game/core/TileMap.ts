@@ -63,25 +63,12 @@ class TileMap {
           this.drawDot(ctx, column, row, this.tileSize)
         } else if (tile === 7) {
           this.drawPowerDot(ctx, column, row, this.tileSize)
-        } else if (tile === 5) {
-          // Draw an empty tile for the eaten coins
-          ctx.clearRect(
-            column * this.tileSize,
-            row * this.tileSize,
-            this.tileSize,
-            this.tileSize
-          )
         }
       }
     }
 
     this.collectedCoins.forEach((coin) => {
-      ctx.clearRect(
-        coin.column * this.tileSize,
-        coin.row * this.tileSize,
-        this.tileSize,
-        this.tileSize
-      )
+      this.map[coin.row][coin.column] = 5
     })
   }
 
