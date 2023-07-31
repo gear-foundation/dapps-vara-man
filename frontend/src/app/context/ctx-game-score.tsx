@@ -13,20 +13,22 @@ interface GameProviderProps {
     children: React.ReactNode;
 }
 
+const gameTimer = 60 * 10
+
 export const GameContext = createContext<GameContextProps>({
     silverCoins: 0,
     goldCoins: 0,
     incrementCoins: () => { },
     lives: 3,
     decrementLives: () => { },
-    timer: 60 * 10
+    timer: gameTimer
 });
 
 export const GameProviderScore = ({ children }: GameProviderProps) => {
     const [silverCoins, setSilverCoins] = useState(0);
     const [goldCoins, setGoldCoins] = useState(0);
     const [lives, setLives] = useState(3);
-    const [timer, setTimer] = useState(60 * 10);
+    const [timer, setTimer] = useState(gameTimer);
 
     const incrementCoins = (coinType: 'silver' | 'gold') => {
         if (coinType === 'silver') {
