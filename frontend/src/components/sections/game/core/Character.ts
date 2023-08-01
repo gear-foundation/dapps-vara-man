@@ -1,13 +1,14 @@
 import MovingDirection from './MovingDirection'
 
 import Tamagochi from '@/assets/images/game/tamagochi.svg'
+import TileMap from './TileMap'
 
 export default class Character {
   x: number
   y: number
   tileSize: number
   velocity: number
-  tileMap: any
+  tileMap: TileMap
 
   currentMovingDirection: any
   requestedMovingDirection: any
@@ -26,6 +27,9 @@ export default class Character {
 
   characterImages!: HTMLImageElement[]
   characterImageIndex!: number
+
+  private readonly CHARACTER_IMAGE_OFFSET_X = -10
+  private readonly CHARACTER_IMAGE_OFFSET_Y = -15
 
   constructor(
     x: number,
@@ -72,8 +76,8 @@ export default class Character {
 
     ctx.drawImage(
       this.characterImages[this.characterImageIndex],
-      -size - 10,
-      -size * 2
+      -size + this.CHARACTER_IMAGE_OFFSET_X,
+      -size + this.CHARACTER_IMAGE_OFFSET_Y
     )
 
     ctx.restore()
@@ -133,19 +137,25 @@ export default class Character {
   }
 
   private move() {
-    if (this.currentMovingDirection !== this.requestedMovingDirection) {
+    const isAtIntegerPosition =
+      Number.isInteger(this.x / this.tileSize) &&
+      Number.isInteger(this.y / this.tileSize)
+
+    if (
+      this.currentMovingDirection !== this.requestedMovingDirection &&
+      isAtIntegerPosition
+    ) {
+      const nextX = Math.floor(this.x / this.tileSize) * this.tileSize
+      const nextY = Math.floor(this.y / this.tileSize) * this.tileSize
+
       if (
-        Number.isInteger(this.x / this.tileSize) &&
-        Number.isInteger(this.y / this.tileSize)
-      ) {
-        if (
-          !this.tileMap.didCollideWithEnvironment(
-            this.x,
-            this.y,
-            this.requestedMovingDirection
-          )
+        !this.tileMap.didCollideWithEnvironment(
+          nextX,
+          nextY,
+          this.requestedMovingDirection
         )
-          this.currentMovingDirection = this.requestedMovingDirection
+      ) {
+        this.currentMovingDirection = this.requestedMovingDirection
       }
     }
 
@@ -159,30 +169,44 @@ export default class Character {
       this.characterAnimationTimer = null
       this.characterImageIndex = 1
       return
-    } else if (
+    }
+
+    if (
       this.currentMovingDirection != null &&
       this.characterAnimationTimer == null
     ) {
       this.characterAnimationTimer = this.characterAnimationTimerDefault
     }
 
-    switch (this.currentMovingDirection) {
-      case MovingDirection.up:
-        this.y -= this.velocity
-        this.characterRotation = this.Rotation.up
-        break
-      case MovingDirection.down:
-        this.y += this.velocity
-        this.characterRotation = this.Rotation.down
-        break
-      case MovingDirection.left:
-        this.x -= this.velocity
-        this.characterRotation = this.Rotation.left
-        break
-      case MovingDirection.right:
-        this.x += this.velocity
-        this.characterRotation = this.Rotation.right
-        break
+    const directionMap = {
+      [MovingDirection.up]: {
+        x: 0,
+        y: -this.velocity,
+        rotation: this.Rotation.up,
+      },
+      [MovingDirection.down]: {
+        x: 0,
+        y: this.velocity,
+        rotation: this.Rotation.down,
+      },
+      [MovingDirection.left]: {
+        x: -this.velocity,
+        y: 0,
+        rotation: this.Rotation.left,
+      },
+      [MovingDirection.right]: {
+        x: this.velocity,
+        y: 0,
+        rotation: this.Rotation.right,
+      },
+    }
+
+    const directionData = directionMap[this.currentMovingDirection]
+    if (directionData) {
+      const { x, y, rotation } = directionData
+      this.x += x
+      this.y += y
+      this.characterRotation = rotation
     }
   }
 
@@ -190,23 +214,18 @@ export default class Character {
     if (this.characterAnimationTimer == null) {
       return
     }
+
     this.characterAnimationTimer--
-    if (
-      this.characterAnimationTimer === 0 &&
-      this.characterImageIndex &&
-      this.characterImages
-    ) {
+    if (this.characterAnimationTimer === 0) {
       this.characterAnimationTimer = this.characterAnimationTimerDefault
-      this.characterImageIndex++
-      if (this.characterImageIndex === this.characterImages.length)
-        this.characterImageIndex = 0
+      this.characterImageIndex =
+        (this.characterImageIndex + 1) % this.characterImages.length
     }
   }
 
   private eatDot() {
     this.tileMap.eatDot(this.x, this.y)
   }
-
 
   private eatGhost(enemies: any[]) {
     if (this.powerDotActive) {

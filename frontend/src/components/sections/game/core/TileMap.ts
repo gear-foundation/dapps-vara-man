@@ -4,10 +4,13 @@ import MovingDirection from './MovingDirection'
 
 import SilverCoin from '@/assets/images/game/silver_coin.svg'
 import GoldCoin from '@/assets/images/game/gold_coin.svg'
-import { smallCoinsMap } from './const'
+import { fullMap, smallCoinsMap } from './const'
+import { QuadTree, Rectangle } from './QuadTree'
 
 class TileMap {
   private tileSize: number
+  private width: number
+  private height: number
   private silverDot: HTMLImageElement
   private goldDot: HTMLImageElement
   private wall!: HTMLImageElement
@@ -23,10 +26,14 @@ class TileMap {
   }[] = []
 
   private coinEaten: boolean
-  private coinType: 'silver' | 'gold' | null
+  private coinType: 'silver' | 'gold' | null = null
 
-  constructor(tileSize: number) {
+  quadTree: QuadTree // Add a quadTree property to the class
+
+  constructor(tileSize: number, width: number, height: number) {
     this.tileSize = tileSize
+    this.width = width
+    this.height = height
 
     this.silverDot = new Image()
     this.silverDot.src = SilverCoin
@@ -47,8 +54,12 @@ class TileMap {
     //5 - empty space
     //6 - enemy
     //7 - power dot
-    this.map = smallCoinsMap
+    this.map = fullMap
     this.initialMap = this.map.map((row) => row.slice())
+    this.quadTree = new QuadTree(
+      new Rectangle(0, 0, this.width, this.height),
+      4
+    )
   }
 
   public resetMap() {
@@ -58,48 +69,43 @@ class TileMap {
   public draw(ctx: CanvasRenderingContext2D): void {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
-        let tile = this.map[row][column]
+        const tile = this.map[row][column]
+
         if (tile === 0) {
-          this.drawDot(ctx, column, row, this.tileSize)
+          this.drawDot(ctx, column, row)
         } else if (tile === 7) {
-          this.drawPowerDot(ctx, column, row, this.tileSize)
+          this.drawPowerDot(ctx, column, row)
         }
       }
     }
 
-    this.collectedCoins.forEach((coin) => {
-      this.map[coin.row][coin.column] = 5
+    this.collectedCoins.forEach(({ row, column }) => {
+      this.map[row][column] = 5
     })
   }
 
   private drawDot(
     ctx: CanvasRenderingContext2D,
     column: number,
-    row: number,
-    size: number
+    row: number
   ): void {
-    ctx.drawImage(
-      this.silverDot,
-      column * this.tileSize,
-      row * this.tileSize,
-      size,
-      size
-    )
+    const tileSize = this.tileSize
+    const x = column * tileSize
+    const y = row * tileSize
+
+    ctx.drawImage(this.silverDot, x, y, tileSize, tileSize)
   }
 
   private drawPowerDot(
     ctx: CanvasRenderingContext2D,
     column: number,
-    row: number,
-    size: number
+    row: number
   ): void {
-    ctx.drawImage(
-      this.goldDot,
-      column * this.tileSize,
-      row * this.tileSize,
-      size,
-      size
-    )
+    const tileSize = this.tileSize
+    const x = column * tileSize
+    const y = row * tileSize
+
+    ctx.drawImage(this.goldDot, x, y, tileSize, tileSize)
   }
 
   // private drawWall(
@@ -156,6 +162,12 @@ class TileMap {
         }
       }
     }
+
+    this.quadTree = new QuadTree(new Rectangle(0, 0, 700, 700), 4)
+    for (const enemy of enemies) {
+      this.quadTree.insert(enemy)
+    }
+
     return enemies
   }
 
@@ -215,6 +227,15 @@ class TileMap {
     return false
   }
 
+  // isEnemyCollidingWithMap(enemy: Enemy): boolean {
+  //   return (
+  //     enemy.x < 0 ||
+  //     enemy.x + enemy.tileSize > 700 ||
+  //     enemy.y < 0 ||
+  //     enemy.y + enemy.tileSize > 700
+  //   );
+  // }
+
   public didWin(): boolean {
     return this.dotsLeft() === 0
   }
@@ -228,25 +249,25 @@ class TileMap {
     const row = Math.floor(y / tileSize)
     const column = Math.floor(x / tileSize)
 
+    const coinValues: { [key: number]: 'silver' | 'gold' } = {
+      0: 'silver',
+      7: 'gold',
+    }
+
     if (
       row >= 0 &&
       row < this.map.length &&
       column >= 0 &&
       column < this.map[0].length
     ) {
-      if (this.map[row][column] === 0) {
-        this.map[row][column] = 5
-        this.coinType = 'silver'
-        this.coinEaten = true
-        this.collectedCoins.push({ row, column, type: 'silver' })
-        return true
-      }
+      const currentValue = this.map[row][column]
+      const coinType = coinValues[currentValue]
 
-      if (this.map[row][column] === 7) {
+      if (coinType) {
         this.map[row][column] = 5
-        this.coinType = 'gold'
+        this.coinType = coinType
         this.coinEaten = true
-        this.collectedCoins.push({ row, column, type: 'gold' })
+        this.collectedCoins.push({ row, column, type: coinType })
         return true
       }
     }

@@ -131,11 +131,11 @@ export default class Enemy {
     this.normalGhost = new Image()
     this.normalGhost.src = Zombie
 
-    this.scaredGhost = new Image()
-    this.scaredGhost.src = Zombie
+    // this.scaredGhost = new Image()
+    // this.scaredGhost.src = Zombie
 
-    this.scaredGhost2 = new Image()
-    this.scaredGhost2.src = Zombie
+    // this.scaredGhost2 = new Image()
+    // this.scaredGhost2.src = Zombie
 
     this.image = this.normalGhost
   }

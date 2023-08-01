@@ -3,9 +3,6 @@ import style from './game.module.scss';
 import { GameContext } from '@/app/context/ctx-game-score.js';
 import GameEngine from './core/GameEngine';
 
-const tileSize = 32;
-const velocity = 2;
-
 const GameCore = () => {
     const { incrementCoins, decrementLives, lives, silverCoins, goldCoins } = useContext(GameContext);
     const canvasRef = useRef(null);
@@ -18,7 +15,7 @@ const GameCore = () => {
             decrementLives,
         };
 
-        const gameEngine = new GameEngine(canvas, tileSize, velocity, gameActions);
+        const gameEngine = new GameEngine(canvas, gameActions);
 
         if (lives !== 0) {
             const animate = () => {
