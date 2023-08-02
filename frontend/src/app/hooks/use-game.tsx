@@ -13,7 +13,7 @@ import { useEffect } from 'react'
 
 export function useGameMessage() {
   const { metadata } = useMetadata(meta)
-  return useSendMessage(ENV.GAME, metadata, true)
+  return useSendMessage(ENV.GAME, metadata)
 }
 
 export function useReadGameState<T>() {
