@@ -9,7 +9,6 @@ use vara_man_io::{
 #[cfg(feature = "binary-vendor")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-
 #[derive(Debug, Default)]
 struct VaraMan {
     pub games: Vec<GameInstance>,
