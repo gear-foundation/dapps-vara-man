@@ -2,19 +2,22 @@ import { HomeRegister } from '@/components/sections/home/home-register'
 import { useGame } from '@/app/context/ctx-game'
 import { LevelsSelectMode } from '@/components/sections/levels/levels-select-mode'
 import { GameInit } from '@/components/sections/game/game-init'
+import { useLevelMessage } from '@/app/hooks/use-level'
 
 export default function Home() {
-  const { player } = useGame()
+  const { player, game } = useGame()
+  const { isPending } = useLevelMessage()
+
+  const findGamePlayer = player && game && game.games.find((x: any) => x[0] === player[0])
+
 
   return (
     <>
-      {/*<GameInit />*/}
       {!player?.length ? (
         <HomeRegister />
       ) : (
         <>
-          <LevelsSelectMode />
-          {/*<GameInit />*/}
+          {!findGamePlayer || isPending ? <LevelsSelectMode /> : <GameInit />}
         </>
       )}
     </>

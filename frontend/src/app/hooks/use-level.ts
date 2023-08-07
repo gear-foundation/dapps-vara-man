@@ -12,9 +12,8 @@ export function useLevelMessage() {
   const onStart = (level: IGameLevel) => {
     if (player) {
       setIsPending(true)
-      const seed = Math.floor(Math.random() * 10 ** 10)
-      // console.log(seed, player[0])
-
+      // const seed = Math.floor(Math.random() * 10 ** 10)
+      const seed = 1
       handleMessage(
         {
           StartGame: {
@@ -31,5 +30,22 @@ export function useLevelMessage() {
     }
   }
 
-  return { isPending, onStart }
+  const onClaimReward = (silver_coins: number, gold_coins: number) => {
+    setIsPending(true)
+
+    handleMessage(
+      {
+        ClaimReward: {
+          silver_coins,
+          gold_coins,
+        },
+      },
+      {
+        onSuccess: () => setIsPending(false),
+        onError: () => setIsPending(false),
+      }
+    )
+  }
+
+  return { isPending, onStart, onClaimReward }
 }

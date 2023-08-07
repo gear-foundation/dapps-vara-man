@@ -3,10 +3,10 @@ import { lazy } from 'react'
 import { useInitGame } from '@/app/hooks/use-game'
 
 const routes = [
-  { path: '/', Page: lazy(() => import('./game')) },
+  { path: '/', Page: lazy(() => import('./home')) },
   { path: '/levels', Page: lazy(() => import('./levels')) },
   { path: '/rules', Page: lazy(() => import('./rules')) },
-  { path: '/home', Page: lazy(() => import('./home')) },
+  { path: '/game', Page: lazy(() => import('./game')) },
 ]
 
 export const Routing = () => {

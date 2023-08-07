@@ -2,6 +2,7 @@ import { LevelsEasy } from '@/components/sections/levels/levels-easy'
 import { LevelsMedium } from '@/components/sections/levels/levels-medium'
 import { LevelsHard } from '@/components/sections/levels/levels-hard'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { cn } from '@/app/utils'
 
 const nav = [
   {
@@ -15,12 +16,14 @@ const nav = [
     card: <LevelsMedium />,
     tab_img: '/images/levels/tab-2.png',
     tab_img_active: '/images/levels/tab-2-active.png',
+    disabled: true,
   },
   {
     title: 'Hard',
     card: <LevelsHard />,
     tab_img: '/images/levels/tab-3.png',
     tab_img_active: '/images/levels/tab-3-active.png',
+    disabled: true,
   },
 ]
 
@@ -35,7 +38,11 @@ export function LevelsSelectMode({ children }: LevelsChooseProps) {
             <TabsTrigger
               value={m.title}
               key={i + m.title}
-              className="relative w-full p-4 text-center group"
+              className={cn(
+                'relative w-full p-4 text-center group',
+                m.disabled && 'opacity-25'
+              )}
+              disabled={m.disabled}
             >
               <img
                 className="absolute inset-0 w-full h-full group-radix-state-active:hidden"

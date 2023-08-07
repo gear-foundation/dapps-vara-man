@@ -20,7 +20,7 @@ class GameEngine {
   private gameLoopTimer: number | null = null
   private isStopGame: boolean
 
-  constructor(canvas: HTMLCanvasElement | null, gameActions: GameActions) {
+  constructor(canvas: HTMLCanvasElement, gameActions: GameActions) {
     this.canvas = canvas
     this.tileMap = new TileMap(this.TILE_SIZE, canvas)
     this.character = this.tileMap.getCharacter(this.VELOCITY)
@@ -45,21 +45,25 @@ class GameEngine {
   }
 
   gameLoop() {
-    const ctx = this.canvas!.getContext('2d')
-    if (!ctx || !this.character || !this.canvas) return
-    ctx.imageSmoothingEnabled = false
+    if (this.canvas) {
+      const ctx = this.canvas.getContext('2d')
 
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      if (!ctx || !this.character) return
 
-    this.tileMap.draw(ctx)
-    this.enemies.forEach((enemy) => enemy.draw(ctx, this.pause()))
-    this.drawGameEnd()
+      ctx.imageSmoothingEnabled = false
 
-    this.character.draw(ctx, this.pause(), this.enemies)
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-    if (this.tileMap && this.tileMap.isCoinEaten()) {
-      const coin = this.tileMap.getCoinEaten()
-      coin && this.gameActions.incrementCoins(coin)
+      this.tileMap.draw(ctx)
+      this.character.draw(ctx, this.pause(), this.enemies)
+      this.enemies.forEach((enemy) => enemy.draw(ctx, this.pause()))
+
+      this.drawGameEnd()
+
+      if (this.tileMap && this.tileMap.isCoinEaten()) {
+        const coin = this.tileMap.getCoinEaten()
+        coin && this.gameActions.incrementCoins(coin)
+      }
     }
   }
 

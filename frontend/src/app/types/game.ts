@@ -20,7 +20,7 @@ export type IPlayer = [HexString, IPlayerInfo]
 
 export type IPlayerInfo = {
   name: string // Имя
-  retries: number // Количество попыток(игр)
+  retries: string // Количество попыток(игр)
   claimed_gold_coins: number // Количество заработанных золотых монет
   claimed_silver_coins: number // Количество заработанных серебряных монет
 }
@@ -32,11 +32,11 @@ export type IGameLevel = 'Easy' | 'Medium' | 'Hard'
 
 export type IGameInstance = {
   level: IGameLevel // Уровень сложности
-  player_address: HexString // Адрес игрока
+  playerAddress: HexString // Адрес игрока
   gold_coins: number // Количество золотых монет на карте
   silver_coins: number // Количество серебряных монет на карте
   start_time_ms: number // Время начала игры
-  is_claimed: boolean // Флаг, который указывает на то, забрал ли игрок награду(клейм) или нет
+  isClaimed: boolean // Флаг, который указывает на то, забрал ли игрок награду(клейм) или нет
   map: [[Entity, MAP_WIDTH], MAP_HEIGHT] // Карта в формате: [[Entity; MAP_WIDTH]; MAP_HEIGHT]
 }
 

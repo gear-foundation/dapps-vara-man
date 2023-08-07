@@ -22,10 +22,10 @@ class TileMap {
   private coinEaten: boolean
   private coinType: 'silver' | 'gold' | null = null
 
-  private canvas: HTMLCanvasElement | null
+  private canvas: HTMLCanvasElement
   private coinBuffer: HTMLCanvasElement | null = null
 
-  constructor(tileSize: number, canvas: HTMLCanvasElement | null) {
+  constructor(tileSize: number, canvas: HTMLCanvasElement) {
     this.tileSize = tileSize
     this.canvas = canvas
 
