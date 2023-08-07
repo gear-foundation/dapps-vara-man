@@ -5,18 +5,12 @@ import MovingDirection from './MovingDirection'
 import SilverCoin from '@/assets/images/game/silver_coin.svg'
 import GoldCoin from '@/assets/images/game/gold_coin.svg'
 import { fullMap, smallCoinsMap } from './const'
-import { QuadTree, Rectangle } from './QuadTree'
 
 class TileMap {
   private tileSize: number
-  private width: number
-  private height: number
   private silverDot: HTMLImageElement
   private goldDot: HTMLImageElement
   private wall!: HTMLImageElement
-  private powerDot: HTMLImageElement
-  private powerDotAnimationTimerDefault: number
-  private powerDotAnimationTimer: number
   private map: number[][]
   private initialMap: number[][]
   private collectedCoins: {
@@ -28,12 +22,12 @@ class TileMap {
   private coinEaten: boolean
   private coinType: 'silver' | 'gold' | null = null
 
-  quadTree: QuadTree // Add a quadTree property to the class
+  private canvas: HTMLCanvasElement | null
+  private coinBuffer: HTMLCanvasElement | null = null
 
-  constructor(tileSize: number, width: number, height: number) {
+  constructor(tileSize: number, canvas: HTMLCanvasElement | null) {
     this.tileSize = tileSize
-    this.width = width
-    this.height = height
+    this.canvas = canvas
 
     this.silverDot = new Image()
     this.silverDot.src = SilverCoin
@@ -41,42 +35,49 @@ class TileMap {
     this.goldDot = new Image()
     this.goldDot.src = GoldCoin
 
-    this.powerDot = this.goldDot
-    this.powerDotAnimationTimerDefault = 30
-    this.powerDotAnimationTimer = this.powerDotAnimationTimerDefault
-
     this.coinEaten = false
     this.coinType = null
 
-    //1 - wall
-    //0 - dots
-    //4 - character
-    //5 - empty space
-    //6 - enemy
-    //7 - power dot
     this.map = fullMap
     this.initialMap = this.map.map((row) => row.slice())
-    this.quadTree = new QuadTree(
-      new Rectangle(0, 0, this.width, this.height),
-      4
-    )
   }
 
   public resetMap() {
     this.map = this.initialMap.map((row) => row.slice())
   }
 
-  public draw(ctx: CanvasRenderingContext2D): void {
+  private createCoinBuffer(): void {
+    this.coinBuffer = document.createElement('canvas')
+    this.coinBuffer.width = this.canvas?.width || 0
+    this.coinBuffer.height = this.canvas?.height || 0
+
+    const bufferCtx = this.coinBuffer.getContext('2d')
+    if (!bufferCtx) return
+
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         const tile = this.map[row][column]
 
         if (tile === 0) {
-          this.drawDot(ctx, column, row)
+          this.drawSilverDot(bufferCtx, column, row)
         } else if (tile === 7) {
-          this.drawPowerDot(ctx, column, row)
+          this.drawGoldDot(bufferCtx, column, row)
         }
       }
+    }
+  }
+
+  public draw(ctx: CanvasRenderingContext2D): void {
+    if (!this.coinBuffer) {
+      this.silverDot.onload = () => {
+        this.createCoinBuffer()
+      }
+      this.goldDot.onload = () => {
+        this.createCoinBuffer()
+      }
+    }
+    if (this.coinBuffer) {
+      ctx.drawImage(this.coinBuffer, 0, 0)
     }
 
     this.collectedCoins.forEach(({ row, column }) => {
@@ -84,7 +85,7 @@ class TileMap {
     })
   }
 
-  private drawDot(
+  private drawSilverDot(
     ctx: CanvasRenderingContext2D,
     column: number,
     row: number
@@ -96,7 +97,7 @@ class TileMap {
     ctx.drawImage(this.silverDot, x, y, tileSize, tileSize)
   }
 
-  private drawPowerDot(
+  private drawGoldDot(
     ctx: CanvasRenderingContext2D,
     column: number,
     row: number
@@ -163,11 +164,6 @@ class TileMap {
       }
     }
 
-    this.quadTree = new QuadTree(new Rectangle(0, 0, 700, 700), 4)
-    for (const enemy of enemies) {
-      this.quadTree.insert(enemy)
-    }
-
     return enemies
   }
 
@@ -227,15 +223,6 @@ class TileMap {
     return false
   }
 
-  // isEnemyCollidingWithMap(enemy: Enemy): boolean {
-  //   return (
-  //     enemy.x < 0 ||
-  //     enemy.x + enemy.tileSize > 700 ||
-  //     enemy.y < 0 ||
-  //     enemy.y + enemy.tileSize > 700
-  //   );
-  // }
-
   public didWin(): boolean {
     return this.dotsLeft() === 0
   }
@@ -268,6 +255,9 @@ class TileMap {
         this.coinType = coinType
         this.coinEaten = true
         this.collectedCoins.push({ row, column, type: coinType })
+
+        this.createCoinBuffer()
+
         return true
       }
     }
@@ -275,7 +265,6 @@ class TileMap {
     this.coinEaten = false
     return false
   }
-
   public isCoinEaten(): boolean {
     return this.coinEaten
   }

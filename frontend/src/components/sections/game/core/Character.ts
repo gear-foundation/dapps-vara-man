@@ -66,7 +66,6 @@ export default class Character {
       this.animate()
     }
     this.eatDot()
-    this.eatGhost(enemies)
 
     const size = this.tileSize
 
@@ -227,12 +226,4 @@ export default class Character {
     this.tileMap.eatDot(this.x, this.y)
   }
 
-  private eatGhost(enemies: any[]) {
-    if (this.powerDotActive) {
-      const collideEnemies = enemies.filter((enemy) => enemy.collideWith(this))
-      collideEnemies.forEach((enemy) => {
-        enemies.splice(enemies.indexOf(enemy), 1)
-      })
-    }
-  }
 }

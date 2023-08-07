@@ -22,27 +22,16 @@ class GameEngine {
 
   constructor(canvas: HTMLCanvasElement | null, gameActions: GameActions) {
     this.canvas = canvas
-    this.tileMap = new TileMap(
-      this.TILE_SIZE,
-      canvas?.width || 0,
-      canvas?.height || 0
-    )
+    this.tileMap = new TileMap(this.TILE_SIZE, canvas)
     this.character = this.tileMap.getCharacter(this.VELOCITY)
     this.enemies = this.tileMap.getEnemies(this.VELOCITY)
     this.gameActions = gameActions
     this.isStopGame = false
-
-    // Set image smoothing and clear the canvas
-    const ctx = this.canvas?.getContext('2d')
-    if (ctx && this.canvas) {
-      ctx.imageSmoothingEnabled = false
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    }
   }
 
   animate() {
-    this.gameLoop()
     if (!this.gameWin()) {
+      this.gameLoop()
       this.animationFrameId = requestAnimationFrame(this.animate.bind(this))
     }
   }
@@ -63,19 +52,8 @@ class GameEngine {
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
     this.tileMap.draw(ctx)
-
-    // Get potential collisions for the character from the QuadTree
-    const potentialCollisions = this.tileMap.quadTree.getPotentialCollisions(
-      this.character
-    )
-
-    // Draw enemies and check collisions only for the potentialCollisions
-    for (const enemy of potentialCollisions) {
-      enemy.draw(ctx, this.pause())
-      if (enemy.collideWith(this.character)) {
-        this.drawGameEnd()
-      }
-    }
+    this.enemies.forEach((enemy) => enemy.draw(ctx, this.pause()))
+    this.drawGameEnd()
 
     this.character.draw(ctx, this.pause(), this.enemies)
 
@@ -97,12 +75,6 @@ class GameEngine {
       clearTimeout(this.gameLoopTimer)
       this.gameLoopTimer = null
     }
-
-    // Reset the canvas to a blank state if required
-    const ctx = this.canvas?.getContext('2d')
-    if (ctx && this.canvas) {
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    }
   }
 
   pause() {
@@ -111,8 +83,13 @@ class GameEngine {
 
   drawGameEnd() {
     if (this.gameOver() || this.gameWin()) {
-      this.gameActions.decrementLives()
-      this.restart()
+      const isCollideWith = this.enemies.some((enemy) =>
+        enemy.collideWith(this.character)
+      )
+      if (isCollideWith) {
+        this.gameActions.decrementLives()
+        this.restart()
+      }
     }
   }
 
