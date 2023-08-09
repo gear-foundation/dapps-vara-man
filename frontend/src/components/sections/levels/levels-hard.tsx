@@ -3,11 +3,13 @@ import { LevelsBackground } from '@/components/sections/levels/levels-background
 import { LevelsModeContent } from './levels-mode-content'
 import { LevelsStartAction } from '@/components/sections/levels/levels-start-action'
 
+import LevelsBackgroundImage from '@/assets/images/levels/bg3.jpg'
+
 export function LevelsHard() {
   return (
     <>
       <div className="relative grow">
-        <LevelsBackground picture="/images/levels/bg3.jpg" />
+        <LevelsBackground picture={LevelsBackgroundImage} />
       </div>
       {/*Level info*/}
       <LevelsModeContent title="Hard" colorText="text-[#F24A4A]">

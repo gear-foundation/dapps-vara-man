@@ -2,10 +2,15 @@ import { useState } from 'react'
 import { AnimatePresence, motion, wrap } from 'framer-motion'
 import { Icons } from '@/components/ui/icons'
 
+import RulesImage1 from '@/assets/images/rules/rules-1.webp'
+import RulesImage2 from '@/assets/images/rules/rules-2.webp'
+import RulesImage3 from '@/assets/images/rules/rules-3.webp'
+
+
 export const images = [
-  '/images/rules/rules-1.webp',
-  '/images/rules/rules-2.webp',
-  '/images/rules/rules-3.webp',
+  RulesImage1,
+  RulesImage2,
+  RulesImage3,
 ]
 
 const variants = {

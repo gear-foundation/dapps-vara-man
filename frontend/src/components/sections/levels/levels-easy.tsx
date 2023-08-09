@@ -4,11 +4,13 @@ import { LevelsBackground } from '@/components/sections/levels/levels-background
 import { LevelsModeContent } from '@/components/sections/levels/levels-mode-content'
 import { LevelsStartAction } from '@/components/sections/levels/levels-start-action'
 
+import LevelsBackgroundImage from '@/assets/images/levels/bg1.jpg'
+
 export function LevelsEasy() {
   return (
     <>
       <div className="relative grow">
-        <LevelsBackground picture="/images/levels/bg1.jpg" />
+        <LevelsBackground picture={LevelsBackgroundImage} />
       </div>
       {/*Level info*/}
       <LevelsModeContent title="Easy" colorText="text-primary">

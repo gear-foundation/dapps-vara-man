@@ -6,6 +6,8 @@ import { GameNavBackground } from '@/components/sections/game/game-nav-backgroun
 import { GameNavItem } from '@/components/sections/game/game-nav-item'
 import { GameNavChampions } from '@/components/sections/game/game-nav-champions'
 
+import StatsHeroImage from '@/assets/images/game/stats-hero.svg'
+
 const data = gameNavData
 
 type GameNavProps = BaseComponentProps & {}
@@ -53,7 +55,7 @@ export function GameNav({ }: GameNavProps) {
           <img
             width={92}
             height={92}
-            src="/images/game/stats-hero.svg"
+            src={StatsHeroImage}
             alt="Avatar"
           />
 

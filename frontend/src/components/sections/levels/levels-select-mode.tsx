@@ -4,25 +4,32 @@ import { LevelsHard } from '@/components/sections/levels/levels-hard'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/app/utils'
 
+import TabActiveImage1 from '@/assets/images/levels/tab-1-active.png'
+import TabActiveImage2 from '@/assets/images/levels/tab-2-active.png'
+import TabActiveImage3 from '@/assets/images/levels/tab-3-active.png'
+import TabImage1 from '@/assets/images/levels/tab-1.png'
+import TabImage2 from '@/assets/images/levels/tab-2.png'
+import TabImage3 from '@/assets/images/levels/tab-3.png'
+
 const nav = [
   {
     title: 'Easy',
     card: <LevelsEasy />,
-    tab_img: '/images/levels/tab-1.png',
-    tab_img_active: '/images/levels/tab-1-active.png',
+    tab_img: TabImage1,
+    tab_img_active: TabActiveImage1,
   },
   {
     title: 'Medium',
     card: <LevelsMedium />,
-    tab_img: '/images/levels/tab-2.png',
-    tab_img_active: '/images/levels/tab-2-active.png',
+    tab_img: TabImage2,
+    tab_img_active: TabActiveImage2,
     disabled: true,
   },
   {
     title: 'Hard',
     card: <LevelsHard />,
-    tab_img: '/images/levels/tab-3.png',
-    tab_img_active: '/images/levels/tab-3-active.png',
+    tab_img: TabImage3,
+    tab_img_active: TabActiveImage3,
     disabled: true,
   },
 ]
