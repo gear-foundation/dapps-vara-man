@@ -39,7 +39,26 @@ class TileMap {
     this.coinType = null
 
     this.map = fullMap
+
     this.initialMap = this.map.map((row) => row.slice())
+  }
+
+  private loadImages(): Promise<any> {
+    const silverDotPromise = new Promise((resolve) => {
+      this.silverDot.onload = resolve
+    })
+    const goldDotPromise = new Promise((resolve) => {
+      this.goldDot.onload = resolve
+    })
+
+    this.silverDot.src = SilverCoin
+    this.goldDot.src = GoldCoin
+    return Promise.all([silverDotPromise, goldDotPromise])
+  }
+
+  public async initialize(): Promise<void> {
+    await this.loadImages()
+    this.createCoinBuffer()
   }
 
   public resetMap() {
@@ -47,16 +66,21 @@ class TileMap {
   }
 
   private createCoinBuffer(): void {
-    this.coinBuffer = document.createElement('canvas')
-    this.coinBuffer.width = this.canvas?.width || 0
-    this.coinBuffer.height = this.canvas?.height || 0
+    if (!this.coinBuffer) {
+      this.coinBuffer = document.createElement('canvas')
+    }
+
+    this.coinBuffer.width = this.canvas.width || 0
+    this.coinBuffer.height = this.canvas.height || 0
 
     const bufferCtx = this.coinBuffer.getContext('2d')
     if (!bufferCtx) return
 
-    for (let row = 0; row < this.map.length; row++) {
-      for (let column = 0; column < this.map[row].length; column++) {
-        const tile = this.map[row][column]
+    bufferCtx.clearRect(0, 0, this.coinBuffer.width, this.coinBuffer.height)
+
+    for (let row = 0; row < this.initialMap.length; row++) {
+      for (let column = 0; column < this.initialMap[row].length; column++) {
+        const tile = this.initialMap[row][column]
 
         if (tile === 0) {
           this.drawSilverDot(bufferCtx, column, row)
@@ -68,20 +92,12 @@ class TileMap {
   }
 
   public draw(ctx: CanvasRenderingContext2D): void {
-    if (!this.coinBuffer) {
-      this.silverDot.onload = () => {
-        this.createCoinBuffer()
-      }
-      this.goldDot.onload = () => {
-        this.createCoinBuffer()
-      }
-    }
     if (this.coinBuffer) {
       ctx.drawImage(this.coinBuffer, 0, 0)
     }
 
     this.collectedCoins.forEach(({ row, column }) => {
-      this.map[row][column] = 5
+      this.initialMap[row][column] = 5
     })
   }
 
@@ -125,11 +141,11 @@ class TileMap {
   // }
 
   public getCharacter(velocity: number): Character | undefined {
-    for (let row = 0; row < this.map.length; row++) {
-      for (let column = 0; column < this.map[row].length; column++) {
-        let tile = this.map[row][column]
+    for (let row = 0; row < this.initialMap.length; row++) {
+      for (let column = 0; column < this.initialMap[row].length; column++) {
+        let tile = this.initialMap[row][column]
         if (tile === 4) {
-          this.map[row][column] = 5
+          this.initialMap[row][column] = 5
           return new Character(
             column * this.tileSize,
             row * this.tileSize,
@@ -140,17 +156,16 @@ class TileMap {
         }
       }
     }
-    return undefined
   }
 
   public getEnemies(velocity: number): Enemy[] {
     const enemies: Enemy[] = []
 
-    for (let row = 0; row < this.map.length; row++) {
-      for (let column = 0; column < this.map[row].length; column++) {
-        const tile = this.map[row][column]
+    for (let row = 0; row < this.initialMap.length; row++) {
+      for (let column = 0; column < this.initialMap[row].length; column++) {
+        const tile = this.initialMap[row][column]
         if (tile === 6) {
-          this.map[row][column] = 0
+          this.initialMap[row][column] = 0
           enemies.push(
             new Enemy(
               column * this.tileSize,
@@ -163,7 +178,6 @@ class TileMap {
         }
       }
     }
-
     return enemies
   }
 
@@ -171,8 +185,8 @@ class TileMap {
     if (!canvas) {
       throw new Error('Missing canvas argument')
     }
-    canvas.width = this.map[0].length * this.tileSize
-    canvas.height = this.map.length * this.tileSize
+    canvas.width = this.initialMap[0].length * this.tileSize
+    canvas.height = this.initialMap.length * this.tileSize
   }
 
   public didCollideWithEnvironment(
@@ -216,7 +230,7 @@ class TileMap {
           break
       }
 
-      const tile = this.map[row][column]
+      const tile = this.initialMap[row][column]
       return tile === 1
     }
 
@@ -228,7 +242,7 @@ class TileMap {
   }
 
   private dotsLeft(): number {
-    return this.map.flat().filter((tile) => tile === 0).length
+    return this.initialMap.flat().filter((tile) => tile === 0).length
   }
 
   public eatDot(x: number, y: number): boolean {
@@ -243,20 +257,19 @@ class TileMap {
 
     if (
       row >= 0 &&
-      row < this.map.length &&
+      row < this.initialMap.length &&
       column >= 0 &&
-      column < this.map[0].length
+      column < this.initialMap[0].length
     ) {
-      const currentValue = this.map[row][column]
+      const currentValue = this.initialMap[row][column]
       const coinType = coinValues[currentValue]
 
       if (coinType) {
-        this.map[row][column] = 5
         this.coinType = coinType
         this.coinEaten = true
         this.collectedCoins.push({ row, column, type: coinType })
 
-        this.createCoinBuffer()
+        this.removeCollectedCoin(row, column)
 
         return true
       }
@@ -265,6 +278,40 @@ class TileMap {
     this.coinEaten = false
     return false
   }
+
+  private updateCoinBuffer(column: number, row: number): void {
+    if (!this.coinBuffer) {
+      return
+    }
+
+    const bufferCtx = this.coinBuffer.getContext('2d')
+    if (!bufferCtx) return
+
+    const tileSize = this.tileSize
+    const x = column * tileSize
+    const y = row * tileSize
+
+    const currentValue = this.initialMap[row][column]
+    bufferCtx.clearRect(x, y, tileSize, tileSize) // Clear the existing coin
+    if (currentValue === 0) {
+      this.drawSilverDot(bufferCtx, column, row)
+    } else if (currentValue === 7) {
+      this.drawGoldDot(bufferCtx, column, row)
+    }
+  }
+
+  public removeCollectedCoin(row: number, column: number): void {
+    this.collectedCoins = this.collectedCoins.filter(
+      (coin) => coin.row !== row || coin.column !== column
+    )
+
+    // Reset the initialMap tile for the eaten coin
+    this.initialMap[row][column] = 5
+
+    // Update the coin buffer to reflect the change
+    this.updateCoinBuffer(column, row)
+  }
+
   public isCoinEaten(): boolean {
     return this.coinEaten
   }

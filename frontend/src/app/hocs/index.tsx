@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import {
   ApiProvider as GearApiProvider,
   AlertProvider as GearAlertProvider,
@@ -21,8 +21,12 @@ const AlertProvider = ({ children }: ProviderProps) => (
   </GearAlertProvider>
 )
 
+const BrowserRouterProvider = ({ children }: ProviderProps) => (
+  <BrowserRouter>{children}</BrowserRouter>
+)
+
 const providers = [
-  HashRouter,
+  BrowserRouterProvider,
   AlertProvider,
   ApiProvider,
   AccountProvider,

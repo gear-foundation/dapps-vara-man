@@ -10,7 +10,6 @@ export const AccountComponent = () => {
 
   const openModal = () => {
     setIsOpen(true)
-    console.log('click')
   }
 
   return (

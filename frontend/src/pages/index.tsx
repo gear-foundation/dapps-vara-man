@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import { lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import { useInitGame } from '@/app/hooks/use-game'
 
 const routes = [
@@ -19,7 +19,9 @@ export const Routing = () => {
           key={path}
           path={path}
           element={
-            <Page />
+            <Suspense fallback={<>Page {Page.name} is loading...</>}>
+              <Page />
+            </Suspense>
           }
         />
       ))}

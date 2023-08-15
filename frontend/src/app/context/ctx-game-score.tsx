@@ -1,11 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { useGame } from './ctx-game';
 
 export interface GameContextProps {
     silverCoins: number;
     goldCoins: number;
     incrementCoins: (coinType: 'silver' | 'gold') => void;
     lives: number;
-    decrementLives: () => void;
     timer: number;
 }
 
@@ -20,27 +20,17 @@ export const GameContext = createContext<GameContextProps>({
     goldCoins: 0,
     incrementCoins: () => { },
     lives: 3,
-    decrementLives: () => { },
     timer: gameTimer
 });
 
 export const GameProviderScore = ({ children }: GameProviderProps) => {
+    const { player } = useGame();
+    const retries = player ? Number(player[1].retries) : 0;
+
     const [silverCoins, setSilverCoins] = useState(0);
     const [goldCoins, setGoldCoins] = useState(0);
     const [lives, setLives] = useState(3);
     const [timer, setTimer] = useState(gameTimer);
-
-    const incrementCoins = (coinType: 'silver' | 'gold') => {
-        if (coinType === 'silver') {
-            setSilverCoins((prevCoins) => prevCoins + 1);
-        } else if (coinType === 'gold') {
-            setGoldCoins((prevCoins) => prevCoins + 1);
-        }
-    };
-
-    const decrementLives = () => {
-        setLives((prevLives) => prevLives - 1);
-    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -51,14 +41,28 @@ export const GameProviderScore = ({ children }: GameProviderProps) => {
     }, []);
 
     useEffect(() => {
-        if (timer <= 0) {
-            setLives(0);
+        const retriesToLivesMap: Record<string, number> = {
+            "1": 3,
+            "2": 2,
+            "3": 1,
+        };
+
+        if (retriesToLivesMap[retries]) {
+            setLives(retriesToLivesMap[retries]);
         }
-    }, [timer]);
+    }, [retries]);
+
+    const incrementCoins = (coinType: 'silver' | 'gold') => {
+        if (coinType === 'silver') {
+            setSilverCoins(prevCoins => prevCoins + 1);
+        } else if (coinType === 'gold') {
+            setGoldCoins((prevCoins) => prevCoins + 1);
+        }
+    };
 
     return (
         <GameContext.Provider
-            value={{ silverCoins, goldCoins, incrementCoins, lives, decrementLives, timer }}
+            value={{ silverCoins, goldCoins, incrementCoins, lives, timer }}
         >
             {children}
         </GameContext.Provider>

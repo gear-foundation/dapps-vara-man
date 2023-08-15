@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import {
   useAccount,
   useReadFullState,
@@ -22,17 +23,24 @@ export function useReadGameState<T>() {
 }
 
 export function useInitGame() {
+  const navigate = useNavigate();
   const { setIsAllowed, setIsSettled } = useApp()
   const { account } = useAccount()
   const { game, setGame, setIsAdmin, setPlayer } = useGame()
   const { state } = useReadGameState<IGameState>()
 
   useEffect(() => {
+    const findPlayer = game?.players.find(([address]) => address === account?.decodedAddress)
+
     setIsSettled(!!game)
     setIsAdmin(account?.decodedAddress === game?.config.operator)
     setPlayer(
-      game?.players.find(([address]) => address === account?.decodedAddress)
+      findPlayer
     )
+
+    if (!findPlayer) {
+      navigate('/');
+    }
   }, [account, game])
 
   useEffect(() => {

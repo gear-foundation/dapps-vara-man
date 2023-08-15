@@ -1,75 +1,68 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GameContext } from '@/app/context/ctx-game-score.js';
-import { useLevelMessage } from '@/app/hooks/use-level';
 import GameEngine from './core/GameEngine';
 
+import GameModal from './game-modal';
+
 import style from './game.module.scss';
-import { LevelsSelectMode } from '../levels/levels-select-mode';
 
 
 const GameCore = () => {
-    const { onClaimReward } = useLevelMessage()
-
-    const { incrementCoins, decrementLives, lives, silverCoins, goldCoins } = useContext(GameContext);
+    const { incrementCoins, lives, } = useContext(GameContext);
     const canvasRef = useRef(null);
     const [gameOver, setGameOver] = useState(false);
+    const [isOpenModal, setOpenModal] = useState(false)
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const gameActions = {
             incrementCoins,
-            decrementLives,
+            setGameOver
         };
 
-        if (canvas) {
+        if (canvas && lives !== 0 && !gameOver) {
             const gameEngine = new GameEngine(canvas, gameActions);
 
-            if (lives !== 0 && !gameOver) {
-                const animate = () => {
-                    gameEngine.animate();
-                };
+            const animate = () => {
+                gameEngine.animate();
+            };
 
-                gameEngine.setCanvasSize();
-                requestAnimationFrame(animate);
+            gameEngine.setCanvasSize();
+            const animationId = requestAnimationFrame(animate);
 
-                // Prevent page scrolling on arrow key press
-                const handleKeyDown = (event: any) => {
-                    const keysToPreventScroll = [37, 38, 39, 40]; // Arrow keys
-                    if (keysToPreventScroll.includes(event.keyCode)) {
-                        event.preventDefault();
-                    }
-                };
+            return () => {
+                cancelAnimationFrame(animationId);
+            };
+        }
 
-                // Attach the event listener for keydown
-                document.addEventListener('keydown', handleKeyDown);
-
-                return () => {
-                    gameEngine.destroy();
-                    document.removeEventListener('keydown', handleKeyDown);
-                };
-            } else {
-                gameEngine.destroy();
-            }
+        if (gameOver) {
+            setOpenModal(true)
         }
 
     }, [gameOver]);
 
+
     useEffect(() => {
-        if (lives === 0) {
-            setGameOver(true);
-            onClaimReward(silverCoins, goldCoins)
+        const handleKeyDown = (event: any) => {
+            const keysToPreventScroll = [37, 38, 39, 40]; // Arrow keys
+            if (keysToPreventScroll.includes(event.keyCode)) {
+                event.preventDefault();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
         }
-    }, [lives]);
+    }, [])
 
     return (
         <>
-            {gameOver ? (
-                <LevelsSelectMode />
-            ) : (
-                <div className={style.canvas}>
-                    <canvas ref={canvasRef} id="gameCanvas" />
-                </div>
-            )}
+            <div className={style.canvas}>
+                {isOpenModal && <GameModal setOpenModal={setOpenModal} />}
+                <canvas ref={canvasRef} id="gameCanvas" />
+            </div>
         </>
     );
 };

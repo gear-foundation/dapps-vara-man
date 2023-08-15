@@ -1,25 +1,22 @@
 import { HomeRegister } from '@/components/sections/home/home-register'
 import { useGame } from '@/app/context/ctx-game'
-import { LevelsSelectMode } from '@/components/sections/levels/levels-select-mode'
-import { GameInit } from '@/components/sections/game/game-init'
-import { useLevelMessage } from '@/app/hooks/use-level'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export default function Home() {
-  const { player, game } = useGame()
-  const { isPending } = useLevelMessage()
+  const { player } = useGame()
+  const navigate = useNavigate();
 
-  const findGamePlayer = player && game && game.games.find((x: any) => x[0] === player[0])
+  useEffect(() => {
+    if (player?.length) {
+      navigate('/levels');
+    }
+  }, [navigate, player])
 
 
   return (
     <>
-      {!player?.length ? (
-        <HomeRegister />
-      ) : (
-        <>
-          {!findGamePlayer || isPending ? <LevelsSelectMode /> : <GameInit />}
-        </>
-      )}
+      <HomeRegister />
     </>
   )
 }
