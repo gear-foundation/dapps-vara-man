@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button'
 import { WALLETS } from './const';
 import { WalletItem } from './wallet-item';
 
-import EditSVG from '@/assets/images/wallet/edit.svg';
 import ExitSVG from '@/assets/images/wallet/exit.svg';
 
 import styles from './WalletModal.module.scss';
@@ -113,7 +112,6 @@ export const WalletModal = ({ accounts, isOpen, setIsOpen }: Props) => {
           <button type="button" className={styles.walletButton} onClick={resetWalletId}>
             <img src={wallet.SVG} alt={wallet.name} />
             {wallet.name}
-            <img src={EditSVG} alt="" />
           </button>
 
           {accountAddress && (
