@@ -17,8 +17,14 @@ class GameEngine {
   private enemies: Enemy[] = []
   private gameActions: GameActions
   private isStopGame: boolean
+  private timer: number
+  private timerInterval: NodeJS.Timeout | null = null
 
-  constructor(canvas: HTMLCanvasElement, gameActions: GameActions) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    gameActions: GameActions,
+    timer: number
+  ) {
     this.canvas = canvas
     this.tileMap = new TileMap(this.TILE_SIZE, canvas)
     this.tileMap.initialize().then(() => {
@@ -28,6 +34,11 @@ class GameEngine {
     })
     this.gameActions = gameActions
     this.isStopGame = false
+    this.timer = timer
+
+    this.timerInterval = setInterval(() => {
+      this.timer -= 1
+    }, 1000)
   }
 
   animate() {
@@ -71,14 +82,23 @@ class GameEngine {
     const isCollideWith = this.enemies.some((enemy) =>
       enemy.collideWith(this.character)
     )
-    if (isCollideWith) {
+
+    if (isCollideWith || this.timer <= 0) {
       this.setPause(true)
       this.gameActions.setGameOver(true)
+      this.clearTimerInterval()
     }
   }
 
   setCanvasSize() {
     this.canvas && this.tileMap.setCanvasSize(this.canvas)
+  }
+
+  private clearTimerInterval() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval)
+      this.timerInterval = null
+    }
   }
 }
 

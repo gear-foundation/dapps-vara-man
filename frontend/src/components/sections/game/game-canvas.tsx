@@ -8,7 +8,7 @@ import style from './game.module.scss';
 
 
 const GameCore = () => {
-    const { incrementCoins, lives, } = useContext(GameContext);
+    const { incrementCoins, lives, timer } = useContext(GameContext);
     const canvasRef = useRef(null);
     const [gameOver, setGameOver] = useState(false);
     const [isOpenModal, setOpenModal] = useState(false)
@@ -21,7 +21,7 @@ const GameCore = () => {
         };
 
         if (canvas && lives !== 0 && !gameOver) {
-            const gameEngine = new GameEngine(canvas, gameActions);
+            const gameEngine = new GameEngine(canvas, gameActions, timer);
 
             const animate = () => {
                 gameEngine.animate();
