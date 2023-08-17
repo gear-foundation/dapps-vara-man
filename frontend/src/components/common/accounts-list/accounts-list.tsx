@@ -8,7 +8,7 @@ import { AccountButton } from '@/components/common/account-button'
 import { SpriteIcon } from '@/components/ui/sprite-icon'
 
 type Props = {
-  list: InjectedAccountWithMeta[]
+  list: InjectedAccountWithMeta
   onChange: () => void
 }
 
@@ -27,25 +27,21 @@ export const AccountsList = ({ list, onChange }: Props) => {
     const decodedAddress = decodeAddress(address)
     await copyToClipboard({ key: decodedAddress, alert })
   }
-
-  return list.length > 0 ? (
-    <ul className="space-y-4 w-full">
-      {list.map((account) => (
-        <li key={account.address} className="flex items-center gap-2">
-          <AccountButton
-            address={account.address}
-            name={account.meta.name}
-            isActive={isLoggedIn(account)}
-            onClick={() => onClick(account)}
-          />
-          <Button
-            icon={() => <SpriteIcon name="copy" className="w-5 h-5" />}
-            color="transparent"
-            onClick={() => onCopy(account.address)}
-          />
-        </li>
-      ))}
-    </ul>
+  
+  return list ? (
+    <>
+      <AccountButton
+        address={list.address}
+        name={list.meta.name}
+        isActive={isLoggedIn(list)}
+        onClick={() => onClick(list)}
+      />
+      <Button
+        icon={() => <SpriteIcon name="copy" className="w-5 h-5" />}
+        color="transparent"
+        onClick={() => onCopy(list.address)}
+      />
+    </>
   ) : (
     <p>
       No accounts found. Please open Polkadot extension, create a new account or

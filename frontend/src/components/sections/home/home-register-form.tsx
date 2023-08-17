@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Input } from '@gear-js/ui'
 import { Icons } from '@/components/ui/icons'
 import { useApp } from '@/app/context/ctx-app'
@@ -5,6 +6,7 @@ import { useForm } from '@mantine/form'
 import { initialRegister } from '@/app/consts'
 import { hexRequired, isExists } from '@/app/utils/form-validations'
 import { useGameMessage } from '@/app/hooks/use-game'
+import { useAccount } from '@gear-js/react-hooks'
 import { cn } from '@/app/utils'
 
 const validate: Record<string, typeof hexRequired> = {
@@ -15,6 +17,7 @@ const validate: Record<string, typeof hexRequired> = {
 export function HomeRegisterForm() {
   const { isPending, setIsPending } = useApp()
   const handleMessage = useGameMessage()
+  const { account } = useAccount()
 
   const form = useForm({
     initialValues: initialRegister,
@@ -30,9 +33,15 @@ export function HomeRegisterForm() {
   const onError = () => {
     setIsPending(false)
   }
+
+  useEffect(() => {
+    if (account) {
+      form.setFieldValue('wallet', account.decodedAddress);
+    }
+  }, [account])
+
   const handleSubmit = form.onSubmit((values) => {
     setIsPending(true)
-    console.log(values)
 
     handleMessage(
       {
@@ -50,13 +59,6 @@ export function HomeRegisterForm() {
       onSubmit={handleSubmit}
       className="grid gap-4 w-full max-w-[400px] mx-auto"
     >
-      <div className="">
-        <Input
-          placeholder="Substrate address"
-          direction="y"
-          {...getInputProps('wallet')}
-        />
-      </div>
       <div className="">
         <Input
           placeholder="Nickname"

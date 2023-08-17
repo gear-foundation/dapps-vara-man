@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAccount } from '@gear-js/react-hooks'
 import { Button } from '@gear-js/ui'
 import { AccountButton } from '@/components/common/account-button'
-import { SelectAccountPopup } from '@/components/popups/select-account-popup'
+import { WalletModal } from '@/components/layout/wallet'
 
 export const AccountComponent = () => {
   const { account, accounts } = useAccount()
@@ -27,11 +27,11 @@ export const AccountComponent = () => {
         <Button text="Connect Account" onClick={openModal} color="lightGreen" />
       )}
 
-      <SelectAccountPopup
+      {isOpen && <WalletModal
         accounts={accounts}
         setIsOpen={setIsOpen}
         isOpen={isOpen}
-      />
+      />}
     </>
   )
 }
