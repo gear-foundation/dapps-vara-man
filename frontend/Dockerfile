@@ -15,10 +15,8 @@ ENV VITE_NODE_ADDRESS=${VITE_NODE_ADDRESS} \
     VITE_GAME_ADDRESS=${VITE_GAME_ADDRESS} \
     DISABLE_ESLINT_PLUGIN=true
 
-RUN npm install
+RUN yarn install
 
-RUN npm run build
+RUN yarn run build
 
-RUN npm install --global serve
-
-CMD ["serve", "-s", "/usr/src/build"]
+CMD ["yarn", "start"]
