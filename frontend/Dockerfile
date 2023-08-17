@@ -19,4 +19,4 @@ RUN yarn install
 
 RUN yarn run build
 
-CMD ["yarn", "start"]
+CMD ["yarn", "run"]
