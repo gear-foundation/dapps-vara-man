@@ -5,8 +5,31 @@ import { LevelsModeContent } from '@/components/sections/levels/levels-mode-cont
 import { LevelsStartAction } from '@/components/sections/levels/levels-start-action'
 
 import LevelsBackgroundImage from '@/assets/images/levels/bg1.jpg'
+import { useGame } from '@/app/context/ctx-game'
+
+const retriesToLivesMap: Record<string, number> = {
+  "0": 3,
+  "1": 2,
+  "2": 1,
+  "3": 0,
+};
 
 export function LevelsEasy() {
+  const { player } = useGame()
+
+  const retries = player ? player[1].retries : 3;
+  const livesLeft = retriesToLivesMap[retries];
+
+  const lifeIcons = Array.from({ length: 3 }, (_, index) => (
+    <div key={index}>
+      <Icons.lifes
+        primary={livesLeft > index ? "currentColor" : "gray"}
+        secondary={livesLeft > index ? "1E8C4D" : "gray"}
+        className="w-9 h-9"
+      />
+    </div>
+  ));
+
   return (
     <>
       <div className="relative grow">
@@ -83,15 +106,7 @@ export function LevelsEasy() {
               <div className="flex items-center py-2.5 pl-24 space-x-7">
                 <span className="text-base w-25">Lives left:</span>
                 <div className="grid grid-cols-3 gap-4 text-primary">
-                  <div>
-                    <Icons.lifes secondary="#1E8C4D" className="w-9 h-9" />
-                  </div>
-                  <div>
-                    <Icons.lifes secondary="#1E8C4D" className="w-9 h-9" />
-                  </div>
-                  <div>
-                    <Icons.lifes secondary="#1E8C4D" className="w-9 h-9" />
-                  </div>
+                  {lifeIcons}
                 </div>
               </div>
             </li>
