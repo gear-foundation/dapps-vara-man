@@ -6,13 +6,7 @@ import { LevelsStartAction } from '@/components/sections/levels/levels-start-act
 
 import LevelsBackgroundImage from '@/assets/images/levels/bg1.jpg'
 import { useGame } from '@/app/context/ctx-game'
-
-const retriesToLivesMap: Record<string, number> = {
-  "0": 3,
-  "1": 2,
-  "2": 1,
-  "3": 0,
-};
+import { retriesToLivesMap } from './levels-select-mode'
 
 export function LevelsEasy() {
   const { player } = useGame()
