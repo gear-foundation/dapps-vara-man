@@ -94,7 +94,7 @@ export function PopupContainer({
                   </div>
                 </div>
 
-                <div className="grow p-8 pb-[100px]">{children}</div>
+                <div className="grow p-8">{children}</div>
                 {footer}
               </Dialog.Panel>
             </motion.div>

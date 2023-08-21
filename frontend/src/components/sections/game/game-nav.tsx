@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'
 import { GameNavItem } from '@/components/sections/game/game-nav-item'
-import { GameNavChampions } from '@/components/sections/game/game-nav-champions'
+import GameNavChampions from '@/components/sections/game/game-nav-champions'
 
 import StatsHeroImage from '@/assets/images/game/stats-hero.svg'
 

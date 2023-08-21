@@ -1,12 +1,26 @@
+import React, { useState, memo } from 'react';
 import { cn } from '@/app/utils'
 import { buttonStyles } from '@gear-js/ui'
-import { useState } from 'react'
 import { ChampionsPopup } from '@/components/popups/champions-popup'
+import { useGame } from '@/app/context/ctx-game'
 
 type GameNavProps = BaseComponentProps & {}
 
-export function GameNavChampions({}: GameNavProps) {
+function GameNavChampions({ }: GameNavProps) {
   const [open, setOpen] = useState(false)
+  const { game } = useGame()
+
+  const sortedPlayers = game
+    ? game.players.slice().sort((playerA, playerB) => {
+      const [_, playerInfoA] = playerA;
+      const [__, playerInfoB] = playerB;
+
+      const totalCoinsA = playerInfoA.claimedGoldCoins + playerInfoA.claimedSilverCoins;
+      const totalCoinsB = playerInfoB.claimedGoldCoins + playerInfoB.claimedSilverCoins;
+
+      return totalCoinsB - totalCoinsA;
+    })
+    : [];
 
   return (
     <>
@@ -17,7 +31,9 @@ export function GameNavChampions({}: GameNavProps) {
         Show champions
       </button>
 
-      <ChampionsPopup setIsOpen={setOpen} isOpen={open} />
+      {game && <ChampionsPopup setIsOpen={setOpen} isOpen={open} players={sortedPlayers} />}
     </>
   )
 }
+
+export default memo(GameNavChampions);

@@ -21,8 +21,8 @@ export type IPlayer = [HexString, IPlayerInfo]
 export type IPlayerInfo = {
   name: string // Имя
   retries: string // Количество попыток(игр)
-  claimed_gold_coins: number // Количество заработанных золотых монет
-  claimed_silver_coins: number // Количество заработанных серебряных монет
+  claimedGoldCoins: number // Количество заработанных золотых монет
+  claimedSilverCoins: number // Количество заработанных серебряных монет
 }
 
 type MAP_WIDTH = 17 // Количество ячеек на карте в длину
