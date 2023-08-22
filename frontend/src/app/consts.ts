@@ -18,3 +18,10 @@ export const initialRegister: IRegisterForm = {
   wallet: '',
   nickname: '',
 }
+
+export const retriesToLivesMap: Record<string, number> = {
+  '0': 3,
+  '1': 2,
+  '2': 1,
+  '3': 0,
+}

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useGame } from './ctx-game';
+import { retriesToLivesMap } from '../consts';
 
 export interface GameContextProps {
     silverCoins: number;
@@ -25,11 +26,12 @@ export const GameContext = createContext<GameContextProps>({
 
 export const GameProviderScore = ({ children }: GameProviderProps) => {
     const { player } = useGame();
-    const retries = player ? Number(player[1].retries) : 0;
+    const retries = player ? player[1].retries : 3;
+    const livesLeft = retriesToLivesMap[retries];
 
     const [silverCoins, setSilverCoins] = useState(0);
     const [goldCoins, setGoldCoins] = useState(0);
-    const [lives, setLives] = useState(3);
+    const [lives, setLives] = useState(livesLeft);
     const [timer, setTimer] = useState(gameTimer);
 
     useEffect(() => {
@@ -40,17 +42,6 @@ export const GameProviderScore = ({ children }: GameProviderProps) => {
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        const retriesToLivesMap: Record<string, number> = {
-            "1": 3,
-            "2": 2,
-            "3": 1,
-        };
-
-        if (retriesToLivesMap[retries]) {
-            setLives(retriesToLivesMap[retries]);
-        }
-    }, [retries]);
 
     const incrementCoins = (coinType: 'silver' | 'gold') => {
         if (coinType === 'silver') {

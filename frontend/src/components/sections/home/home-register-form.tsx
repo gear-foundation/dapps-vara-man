@@ -4,15 +4,27 @@ import { Icons } from '@/components/ui/icons'
 import { useApp } from '@/app/context/ctx-app'
 import { useForm } from '@mantine/form'
 import { initialRegister } from '@/app/consts'
-import { hexRequired, isExists } from '@/app/utils/form-validations'
+import { containsValidCharacters, hexRequired, validateLength } from '@/app/utils/form-validations'
 import { useGameMessage } from '@/app/hooks/use-game'
 import { useAccount } from '@gear-js/react-hooks'
 import { cn } from '@/app/utils'
 
-const validate: Record<string, typeof hexRequired> = {
+const validate: Record<string, (value: string) => string | null> = {
   wallet: hexRequired,
-  nickname: isExists,
-}
+  nickname: (value) => {
+    const lengthError = validateLength(value, 3, 20);
+    if (lengthError) {
+      return lengthError;
+    }
+
+    const charactersError = containsValidCharacters(value);
+    if (charactersError) {
+      return charactersError;
+    }
+
+    return null;
+  },
+};
 
 export function HomeRegisterForm() {
   const { isPending, setIsPending } = useApp()

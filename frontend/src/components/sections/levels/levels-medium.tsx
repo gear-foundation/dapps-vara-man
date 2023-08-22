@@ -5,7 +5,7 @@ import { LevelsStartAction } from '@/components/sections/levels/levels-start-act
 
 import LevelsBackgroundImage from '@/assets/images/levels/bg2.jpg'
 import { useGame } from '@/app/context/ctx-game'
-import { retriesToLivesMap } from './levels-select-mode'
+import { retriesToLivesMap } from '@/app/consts'
 
 export function LevelsMedium() {
   const { player } = useGame()

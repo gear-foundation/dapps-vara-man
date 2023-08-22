@@ -11,13 +11,6 @@ import TabImage1 from '@/assets/images/levels/tab-1.png'
 import TabImage2 from '@/assets/images/levels/tab-2.png'
 import TabImage3 from '@/assets/images/levels/tab-3.png'
 
-export const retriesToLivesMap: Record<string, number> = {
-  "0": 3,
-  "1": 2,
-  "2": 1,
-  "3": 0,
-};
-
 const nav = [
   {
     title: 'Easy',
