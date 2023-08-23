@@ -51,7 +51,10 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           build-args: |
             VITE_NODE_ADDRESS=${{ secrets.VITE_NODE_ADDRESS }}
+            VITE_AUTH_API_ADDRESS=${{ secrets.VITE_AUTH_API_ADDRESS }}
+            VITE_FT_ADDRES=${{ secrets.VITE_FT_ADDRES }}
             VITE_GAME_ADDRESS=${{ secrets.VITE_GAME_ADDRESS }}
+            VITE_TESTNET_WEBSITE_ADDRESS=${{ secrets.VITE_TESTNET_WEBSITE_ADDRESS }}
             
 
   deploy-vara-man-k8s:
