@@ -1,15 +1,52 @@
+import { useAlert, useReadFullState } from '@gear-js/react-hooks'
+import { getStateMetadata, ProgramMetadata, StateMetadata } from '@gear-js/api'
+import { HexString } from '@polkadot/util/types'
 import { useEffect, useState } from 'react'
-import { getProgramMetadata, ProgramMetadata } from '@gear-js/api'
 
-export const useMetadata = (source: RequestInfo | URL) => {
-  const [data, setData] = useState<ProgramMetadata>()
+export function useProgramMetadata(source: string) {
+  const alert = useAlert()
+
+  const [metadata, setMetadata] = useState<ProgramMetadata>()
 
   useEffect(() => {
     fetch(source)
-      .then((res) => res.text() as Promise<string>)
-      .then((raw) => getProgramMetadata(`0x${raw}`))
-      .then((meta) => setData(meta))
-  }, [source])
+      .then((response) => response.text())
+      .then((raw) => ProgramMetadata.from(`0x${raw}`))
+      .then((result) => setMetadata(result))
+      .catch(({ message }: Error) => alert.error(message))
 
-  return { metadata: data }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return metadata
+}
+
+export function useStateMetadata(source: string) {
+  const alert = useAlert()
+
+  const [stateMetadata, setStateMetadata] = useState<StateMetadata>()
+
+  useEffect(() => {
+    fetch(source)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => Buffer.from(arrayBuffer))
+      .then((buffer) => getStateMetadata(buffer))
+      .then((result) => setStateMetadata(result))
+      .catch(({ message }: Error) => alert.error(message))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return stateMetadata
+}
+
+export function useReadState<T>({
+  programId,
+  meta,
+}: {
+  programId?: HexString
+  meta: string
+}) {
+  const metadata = useProgramMetadata(meta)
+  return useReadFullState<T>(programId, metadata, '0x')
 }
