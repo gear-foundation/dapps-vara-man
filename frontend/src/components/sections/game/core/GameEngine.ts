@@ -115,7 +115,7 @@ class GameEngine {
       enemy.collideWith(this.character)
     )
 
-    if (isCollideWith || this.timer <= 0) {
+    if (isCollideWith || this.timer <= 0 || this.tileMap.didWin()) {
       this.setPause(true)
       this.gameActions.setGameOver(true)
       this.clearTimerInterval()
