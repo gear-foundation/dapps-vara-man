@@ -1,5 +1,6 @@
-import { GameContext } from '@/app/context/ctx-game-score'
 import { useContext, useEffect, useState } from 'react'
+import { GameContext } from '@/app/context/ctx-game-score'
+import { useAccount } from '@gear-js/react-hooks'
 
 import { gameNavData } from '@/components/sections/game/game-nav.data'
 import { GameNavBackground } from '@/components/sections/game/game-nav-background'
@@ -8,11 +9,13 @@ import GameNavChampions from '@/components/sections/game/game-nav-champions'
 
 import StatsHeroImage from '@/assets/images/game/stats-hero.svg'
 
+
 const data = gameNavData
 
 type GameNavProps = BaseComponentProps & {}
 
 export function GameNav({ }: GameNavProps) {
+  const { account } = useAccount()
   const { silverCoins, goldCoins, lives, timer } = useContext(GameContext);
   const [formattedTimer, setFormattedTimer] = useState('00:00');
 
@@ -31,6 +34,18 @@ export function GameNav({ }: GameNavProps) {
     }
 
   }, [timer]);
+
+
+  const shortenString = (str: string, length: number) => {
+    if (str.length <= length) {
+      return str;
+    }
+    const start = str.slice(0, length / 2);
+    const end = str.slice(-length / 2);
+    return start + '...' + end;
+  };
+
+  const shortenedStr = account && shortenString(account.decodedAddress, 10);
 
 
   return (
@@ -76,7 +91,7 @@ export function GameNav({ }: GameNavProps) {
             <small className="text-white/60 opacity-80 font-normal text-[10px] leading-[14px]">
               Substrate address
             </small>
-            <span className="leading-4">0xt9g21kgi98...fa92</span>
+            <span className="leading-4">{shortenedStr}</span>
           </div>
         </div>
       </div>
