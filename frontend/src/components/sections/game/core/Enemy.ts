@@ -18,6 +18,9 @@ export default class Enemy {
   scaredGhost2!: HTMLImageElement
   image!: HTMLImageElement
 
+  private directionChangeInterval: number = 1000
+  private lastDirectionChangeTime: number = 0
+
   constructor(
     x: number,
     y: number,
@@ -46,8 +49,15 @@ export default class Enemy {
 
   draw(ctx: CanvasRenderingContext2D, pause: boolean) {
     if (!pause) {
+      // Call the chooseDirectionBasedOnAdjacentCells() method to get a direction
+      const newDirection = this.chooseDirectionBasedOnAdjacentCells()
+
+      // If the new direction is different from the current one, update the direction
+      if (newDirection !== this.movingDirection) {
+        this.movingDirection = newDirection
+      }
+
       this.move()
-      this.changeDirection()
     }
     this.setImage(ctx)
   }
@@ -68,34 +78,6 @@ export default class Enemy {
 
   private setImage(ctx: CanvasRenderingContext2D) {
     ctx.drawImage(this.image, this.x - 5, this.y - 20)
-  }
-
-  private changeDirection() {
-    this.directionTimer--
-    let newMoveDirection = null
-    if (this.directionTimer == 0) {
-      this.directionTimer = this.directionTimerDefault
-      newMoveDirection = Math.floor(
-        Math.random() * Object.keys(MovingDirection).length
-      )
-    }
-
-    if (newMoveDirection != null && this.movingDirection != newMoveDirection) {
-      if (
-        Number.isInteger(this.x / this.tileSize) &&
-        Number.isInteger(this.y / this.tileSize)
-      ) {
-        if (
-          !this.tileMap.didCollideWithEnvironment(
-            this.x,
-            this.y,
-            newMoveDirection
-          )
-        ) {
-          this.movingDirection = newMoveDirection
-        }
-      }
-    }
   }
 
   private move() {
@@ -123,6 +105,86 @@ export default class Enemy {
     }
   }
 
+  getCurrentCell(): { row: number; column: number } {
+    const currentRow = Math.floor(this.y / this.tileSize)
+    const currentColumn = Math.floor(this.x / this.tileSize)
+    return { row: currentRow, column: currentColumn }
+  }
+
+  getAdjacentCells(): { row: number; column: number }[] {
+    const currentCell = this.getCurrentCell()
+    const adjacentCells: { row: number; column: number }[] = []
+
+    adjacentCells.push({ row: currentCell.row - 1, column: currentCell.column })
+    adjacentCells.push({ row: currentCell.row + 1, column: currentCell.column })
+    adjacentCells.push({ row: currentCell.row, column: currentCell.column - 1 })
+    adjacentCells.push({ row: currentCell.row, column: currentCell.column + 1 })
+
+    return adjacentCells
+  }
+
+  chooseDirectionBasedOnAdjacentCells(): number {
+    const currentCell = this.getCurrentCell()
+    const adjacentCells = this.getAdjacentCells()
+
+    const currentTime = Date.now()
+
+    // Check if enough time has passed since the last direction change
+    if (
+      currentTime - this.lastDirectionChangeTime >=
+      this.directionChangeInterval
+    ) {
+      const availableDirections: number[] = []
+
+      for (const cell of adjacentCells) {
+        const cellValue = this.tileMap.initialMap[cell.row][cell.column]
+        if (cellValue === 0 || cellValue === 5) {
+          const direction = this.calculateDirectionToCell(currentCell, cell)
+          availableDirections.push(direction)
+        }
+      }
+
+      if (
+        Number.isInteger(this.x / this.tileSize) &&
+        Number.isInteger(this.y / this.tileSize)
+      ) {
+        // If there are available directions, choose a random one
+        if (availableDirections.length > 0) {
+          const randomIndex = Math.floor(
+            Math.random() * availableDirections.length
+          )
+          const newDirection = availableDirections[randomIndex]
+
+          this.movingDirection = newDirection
+
+          // Update the time of the last direction change
+          this.lastDirectionChangeTime = currentTime
+        }
+      }
+    }
+
+    return this.movingDirection
+  }
+
+  calculateDirectionToCell(
+    currentCell: { row: number; column: number },
+    targetCell: { row: number; column: number }
+  ): number {
+    // Calculate the direction to the target cell relative to the current cell
+    if (targetCell.row < currentCell.row) {
+      return MovingDirection.up
+    } else if (targetCell.row > currentCell.row) {
+      return MovingDirection.down
+    } else if (targetCell.column < currentCell.column) {
+      return MovingDirection.left
+    } else if (targetCell.column > currentCell.column) {
+      return MovingDirection.right
+    }
+
+    // If the cells are at the same position, return the current direction
+    return this.movingDirection
+  }
+
   private random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
@@ -130,12 +192,6 @@ export default class Enemy {
   private loadImages() {
     this.normalGhost = new Image()
     this.normalGhost.src = Zombie
-
-    // this.scaredGhost = new Image()
-    // this.scaredGhost.src = Zombie
-
-    // this.scaredGhost2 = new Image()
-    // this.scaredGhost2.src = Zombie
 
     this.image = this.normalGhost
   }

@@ -175,6 +175,7 @@ class TileMap {
               this
             )
           )
+          this.createCoinBuffer()
         }
       }
     }

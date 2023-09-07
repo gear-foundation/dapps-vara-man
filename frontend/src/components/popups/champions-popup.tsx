@@ -60,6 +60,7 @@ export function ChampionsPopup({
       <ScrollArea className="mt-3 max-h-80 pr-4 -mr-4" type="auto">
         {players.map((item, index) => {
           const { name, claimedGoldCoins, claimedSilverCoins } = item[1]
+
           const playerClassNames = [
             styles.player,
             index === 0 && styles.first,
@@ -70,7 +71,7 @@ export function ChampionsPopup({
           return (
             <div
               className={cn(playerClassNames)}
-              key={name}
+              key={item[0]}
             >
               <img src={AvatarIcon} alt="" className="-m-[10px]" />
               <span className="w-50 ml-5">{name}</span>
