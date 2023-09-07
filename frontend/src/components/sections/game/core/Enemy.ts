@@ -18,6 +18,9 @@ export default class Enemy {
   scaredGhost2!: HTMLImageElement
   image!: HTMLImageElement
 
+  private directionChangeInterval: number = 1000
+  private lastDirectionChangeTime: number = 0
+
   constructor(
     x: number,
     y: number,
@@ -44,10 +47,97 @@ export default class Enemy {
     this.scaredAboutToExpireTimer = this.scaredAboutToExpireTimerDefault
   }
 
+  getCurrentCell(): { row: number; column: number } {
+    const currentRow = Math.floor(this.y / this.tileSize)
+    const currentColumn = Math.floor(this.x / this.tileSize)
+    return { row: currentRow, column: currentColumn }
+  }
+
+  getAdjacentCells(): { row: number; column: number }[] {
+    const currentCell = this.getCurrentCell()
+    const adjacentCells: { row: number; column: number }[] = []
+
+    adjacentCells.push({ row: currentCell.row - 1, column: currentCell.column })
+    adjacentCells.push({ row: currentCell.row + 1, column: currentCell.column })
+    adjacentCells.push({ row: currentCell.row, column: currentCell.column - 1 })
+    adjacentCells.push({ row: currentCell.row, column: currentCell.column + 1 })
+
+    return adjacentCells
+  }
+
+  chooseDirectionBasedOnAdjacentCells(): number {
+    const currentCell = this.getCurrentCell()
+    const adjacentCells = this.getAdjacentCells()
+
+    const currentTime = Date.now()
+
+    // Проверяем, прошло ли достаточно времени с последней смены направления
+    if (
+      currentTime - this.lastDirectionChangeTime >=
+      this.directionChangeInterval
+    ) {
+      const availableDirections: number[] = []
+
+      for (const cell of adjacentCells) {
+        const cellValue = this.tileMap.initialMap[cell.row][cell.column]
+        if (cellValue === 0 || cellValue === 5) {
+          const direction = this.calculateDirectionToCell(currentCell, cell)
+          availableDirections.push(direction)
+        }
+      }
+
+      if (
+        Number.isInteger(this.x / this.tileSize) &&
+        Number.isInteger(this.y / this.tileSize)
+      ) {
+        // Если есть доступные направления, выбираем случайное из них
+        if (availableDirections.length > 0) {
+          const randomIndex = Math.floor(
+            Math.random() * availableDirections.length
+          )
+          const newDirection = availableDirections[randomIndex]
+
+          this.movingDirection = newDirection
+
+          // Обновляем время последней смены направления
+          this.lastDirectionChangeTime = currentTime
+        }
+      }
+    }
+
+    return this.movingDirection
+  }
+
+  calculateDirectionToCell(
+    currentCell: { row: number; column: number },
+    targetCell: { row: number; column: number }
+  ): number {
+    // Вычисляем направление к целевой клетке относительно текущей клетки
+    if (targetCell.row < currentCell.row) {
+      return MovingDirection.up
+    } else if (targetCell.row > currentCell.row) {
+      return MovingDirection.down
+    } else if (targetCell.column < currentCell.column) {
+      return MovingDirection.left
+    } else if (targetCell.column > currentCell.column) {
+      return MovingDirection.right
+    }
+
+    // Если клетки находятся на одной и той же позиции, возвращаем текущее направление
+    return this.movingDirection
+  }
+
   draw(ctx: CanvasRenderingContext2D, pause: boolean) {
     if (!pause) {
+      // Вызываем метод chooseDirectionBasedOnAdjacentCells() для получения направления
+      const newDirection = this.chooseDirectionBasedOnAdjacentCells()
+
+      // Если новое направление не совпадает с текущим, обновляем направление
+      if (newDirection !== this.movingDirection) {
+        this.movingDirection = newDirection
+      }
+
       this.move()
-      this.changeDirection()
     }
     this.setImage(ctx)
   }

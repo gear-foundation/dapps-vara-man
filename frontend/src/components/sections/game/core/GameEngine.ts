@@ -19,6 +19,7 @@ class GameEngine {
   private isStopGame: boolean
   private timer: number
   private timerInterval: NodeJS.Timeout | null = null
+  private animationId: number | null = null
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -41,11 +42,36 @@ class GameEngine {
     }, 1000)
   }
 
-  animate() {
-    if (!this.isStopGame) {
-      this.gameLoop()
-      requestAnimationFrame(this.animate.bind(this))
+  startGameLoop() {
+    if (!this.animationId) {
+      const animate = () => {
+        if (!this.isStopGame) {
+          this.gameLoop()
+          this.animationId = requestAnimationFrame(animate)
+        }
+      }
+
+      // Start the animation loop
+      this.animationId = requestAnimationFrame(animate)
     }
+  }
+
+  // Method to stop the game loop
+  stopGameLoop() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId)
+      this.animationId = null
+    }
+  }
+
+  gameStart() {
+    this.isStopGame = false
+    this.startGameLoop()
+  }
+
+  gameOver() {
+    this.isStopGame = true
+    this.stopGameLoop()
   }
 
   gameLoop() {
@@ -68,6 +94,12 @@ class GameEngine {
         coin && this.gameActions.incrementCoins(coin)
       }
     }
+  }
+
+  endGame(animationId: number) {
+    this.clearTimerInterval()
+    cancelAnimationFrame(animationId)
+    console.log('cancelAnimationFrame(animationId)', animationId)
   }
 
   setPause(isStart: boolean) {
@@ -94,7 +126,7 @@ class GameEngine {
     this.canvas && this.tileMap.setCanvasSize(this.canvas)
   }
 
-  private clearTimerInterval() {
+  clearTimerInterval() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval)
       this.timerInterval = null

@@ -22,28 +22,24 @@ const GameCore = () => {
 
         if (canvas && lives !== 0 && !gameOver) {
             const gameEngine = new GameEngine(canvas, gameActions, timer);
-
-            const animate = () => {
-                gameEngine.animate();
-            };
-
             gameEngine.setCanvasSize();
-            const animationId = requestAnimationFrame(animate);
+            gameEngine.startGameLoop();
 
             return () => {
-                cancelAnimationFrame(animationId);
+                gameEngine.stopGameLoop();
             };
         }
 
         if (gameOver) {
-            setOpenModal(true)
+            setOpenModal(true);
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameOver]);
 
 
+
     useEffect(() => {
-        const handleKeyDown = (event: any) => {
+        const handleKeyDown = (event: KeyboardEvent) => {
             const keysToPreventScroll = [37, 38, 39, 40]; // Arrow keys
             if (keysToPreventScroll.includes(event.keyCode)) {
                 event.preventDefault();
