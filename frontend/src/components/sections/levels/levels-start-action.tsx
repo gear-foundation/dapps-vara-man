@@ -22,7 +22,7 @@ export function LevelsStartAction({
   useEffect(() => {
     if (!player) return
 
-    if (player[1].retries === "3" || isPending) {
+    if (player[1].retries === "3") {
       setDisable(true)
     }
 
@@ -53,7 +53,7 @@ export function LevelsStartAction({
           className,
           isPending && 'btn--loading'
         )}
-        disabled={isDisable}
+        disabled={isDisable || isPending}
         onClick={() => onClickStart()}
       >
         <Icons.gameJoystick className="w-5 h-5" />
