@@ -98,5 +98,4 @@ fn success_add_admin() {
     vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
     vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
     vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
-
 }

@@ -216,13 +216,11 @@ async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraMa
             if vara_man.admins.contains(&msg_source) {
                 vara_man.admins.push(admin);
                 VaraManEvent::AdminAdded(admin)
-            }
-            else {
+            } else {
                 VaraManEvent::Error("Only an admin can add another admin.".to_owned())
             }
         }
     }
-    
 }
 
 #[no_mangle]
