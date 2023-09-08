@@ -1,5 +1,6 @@
 use super::{ADMIN, VARA_MAN_ID};
 use gstd::prelude::*;
+use gstd::ActorId;
 use gtest::{Program, System};
 use vara_man_io::{
     Config, GameSeed, Level, Status, VaraMan as VaraManState, VaraManAction, VaraManEvent,
@@ -14,6 +15,7 @@ pub trait VaraMan {
     fn claim_reward(&self, from: u64, silver_coins: u64, gold_coins: u64, error: bool);
     fn change_status(&self, status: Status);
     fn change_config(&self, config: Config);
+    fn add_admin(&self, admin: ActorId);
     fn send_tx(&self, from: u64, action: VaraManAction, error: bool);
     fn get_state(&self) -> VaraManState;
 }
@@ -69,6 +71,10 @@ impl VaraMan for Program<'_> {
 
     fn change_config(&self, config: Config) {
         self.send_tx(ADMIN, VaraManAction::ChangeConfig(config), false);
+    }
+
+    fn add_admin(&self, admin: ActorId) {
+        self.send_tx(ADMIN, VaraManAction::AddAdmin(admin), false);
     }
 
     fn send_tx(&self, from: u64, action: VaraManAction, error: bool) {
