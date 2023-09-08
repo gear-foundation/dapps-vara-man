@@ -35,6 +35,7 @@ pub struct VaraMan {
     pub players: Vec<(ActorId, Player)>,
     pub status: Status,
     pub config: Config,
+    pub admins: Vec<ActorId>,
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Encode, Decode, TypeInfo)]
@@ -260,6 +261,7 @@ pub enum VaraManAction {
     ClaimReward { silver_coins: u64, gold_coins: u64 },
     ChangeStatus(Status),
     ChangeConfig(Config),
+    AddAdmin(ActorId),
 }
 
 #[derive(Debug, Encode, Decode, TypeInfo)]
@@ -270,6 +272,7 @@ pub enum VaraManEvent {
         silver_coins: u64,
         gold_coins: u64,
     },
+    AdminAdded(ActorId),
     PlayerRegistered(ActorId),
     StatusChanged(Status),
     ConfigChanged(Config),

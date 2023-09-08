@@ -70,3 +70,32 @@ fn fail_player_has_exhausted_all_attempts() {
     let state = vara_man.get_state();
     assert_eq!(state.games.len(), 0);
 }
+
+#[test]
+fn success_add_admin() {
+    let system = System::new();
+    system.init_logger();
+
+    let vara_man = Program::vara_man(&system);
+    vara_man.change_status(Status::Started);
+
+    vara_man.register_player(utils::PLAYERS[0], "John", false);
+
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, true);
+
+    vara_man.add_admin(utils::PLAYERS[0].into());
+
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+    vara_man.claim_reward(utils::PLAYERS[0], 10, 1, false);
+    vara_man.start_game(utils::PLAYERS[0], Level::Easy, u64::MAX, false);
+}

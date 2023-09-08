@@ -15,15 +15,17 @@ struct VaraMan {
     pub players: HashMap<ActorId, Player>,
     pub status: Status,
     pub config: Config,
+    pub admins: Vec<ActorId>,
 }
 
-impl From<&VaraMan> for VaraManState {
-    fn from(value: &VaraMan) -> Self {
+impl From<VaraMan> for VaraManState {
+    fn from(value: VaraMan) -> Self {
         let VaraMan {
             games,
             players,
             status,
             config,
+            admins,
         } = value;
 
         let games = games.iter().map(|(id, game)| (*id, game.clone())).collect();
@@ -36,8 +38,9 @@ impl From<&VaraMan> for VaraManState {
         Self {
             games,
             players,
-            status: *status,
-            config: *config,
+            status,
+            config,
+            admins,
         }
     }
 }
@@ -98,7 +101,7 @@ async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraMa
                 return VaraManEvent::Error("Player is already StartGame".to_owned());
             };
 
-            if !player.is_have_retries() {
+            if !vara_man.admins.contains(&player_address) && !player.is_have_retries() {
                 return VaraManEvent::Error("Player has exhausted all his attempts.".to_owned());
             }
 
@@ -208,18 +211,26 @@ async fn process_handle(action: VaraManAction, vara_man: &mut VaraMan) -> VaraMa
                 VaraManEvent::ConfigChanged(config)
             }
         }
+        VaraManAction::AddAdmin(admin) => {
+            let msg_source = msg::source();
+            if vara_man.admins.contains(&msg_source) {
+                vara_man.admins.push(admin);
+                VaraManEvent::AdminAdded(admin)
+            } else {
+                VaraManEvent::Error("Only an admin can add another admin.".to_owned())
+            }
+        }
     }
 }
 
 #[no_mangle]
 extern "C" fn init() {
     let init: VaraManInit = msg::load().expect("Unexpected invalid init payload.");
-
     assert!(init.config.is_valid());
-
     unsafe {
         VARA_MAN = Some(VaraMan {
             config: init.config,
+            admins: vec![msg::source()],
             ..Default::default()
         })
     };
@@ -229,7 +240,7 @@ extern "C" fn init() {
 extern "C" fn state() {
     msg::reply(
         unsafe {
-            let vara_man = VARA_MAN.as_ref().expect("Uninitialized vara man state.");
+            let vara_man = VARA_MAN.take().expect("Uninitialized vara man state.");
             let vara_man_state: VaraManState = vara_man.into();
             vara_man_state
         },
