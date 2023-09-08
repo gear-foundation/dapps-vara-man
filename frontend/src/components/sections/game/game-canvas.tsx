@@ -20,7 +20,7 @@ const GameCore = () => {
             setGameOver
         };
 
-        if (canvas && lives !== 0 && !gameOver) {
+        if (canvas && !gameOver) {
             const gameEngine = new GameEngine(canvas, gameActions, timer);
             gameEngine.setCanvasSize();
             gameEngine.startGameLoop();

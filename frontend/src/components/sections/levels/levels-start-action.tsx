@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { cn } from '@/app/utils'
 import { Icons } from '@/components/ui/icons'
@@ -15,8 +16,20 @@ export function LevelsStartAction({
 }: LevelsStartActionProps) {
   const navigate = useNavigate();
   const { isPending, onStart } = useLevelMessage()
-  const { player, game } = useGame()
+  const { player, game, isAdmin } = useGame()
+  const [isDisable, setDisable] = useState(false)
 
+  useEffect(() => {
+    if (!player) return
+
+    if (player[1].retries === "3" || isPending) {
+      setDisable(true)
+    }
+
+    if (isAdmin) {
+      setDisable(false)
+    }
+  }, [])
 
   const onClickStart = () => {
     if (game && player) {
@@ -26,7 +39,7 @@ export function LevelsStartAction({
         return navigate('/game');
       }
 
-      if (player[1].retries !== "3") {
+      if (player[1].retries !== "3" || isAdmin) {
         return onStart(level)
       }
     }
@@ -40,7 +53,7 @@ export function LevelsStartAction({
           className,
           isPending && 'btn--loading'
         )}
-        disabled={isPending || (player && player[1].retries === "3")}
+        disabled={isDisable}
         onClick={() => onClickStart()}
       >
         <Icons.gameJoystick className="w-5 h-5" />
