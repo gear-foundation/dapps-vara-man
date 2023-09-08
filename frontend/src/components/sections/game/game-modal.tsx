@@ -83,12 +83,12 @@ const GameModal = ({ setOpenModal }: Props) => {
                         <div className={style.total}>
                             <div className={style.coins}>
                                 <img src={SilverCoinIcon} width={24} alt="" />
-                                <span className='font-semibold'>{silverCoins} x 5 = {silverTokens * 5} </span>
+                                <span className='font-semibold'>{silverCoins} x 5 = {silverTokens} </span>
                                 <span className='font-extralight'>{account?.balance.unit || 'TVARA'}</span>
                             </div>
                             <div className={style.coins}>
                                 <img src={GoldCoinIcon} width={24} alt="" />
-                                <span className='font-semibold'>{goldCoins} x 10 = {goldTokens * 10} </span>
+                                <span className='font-semibold'>{goldCoins} x 10 = {goldTokens} </span>
                                 <span className='font-extralight'>{account?.balance.unit || 'TVARA'}</span>
                             </div>
 

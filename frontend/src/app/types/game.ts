@@ -1,11 +1,11 @@
 import { HexString } from '@polkadot/util/types'
 
 export type IGameState = {
+  admins: string[]
   games: IGameInstance[]
   players: IPlayer[]
   status: 'Paused' | 'Started'
   config: {
-    operator: HexString
     tokensPerGoldCoin: number
     tokensPerSilverCoin: number
     easyRewardScaleBps: number

@@ -27,9 +27,10 @@ export function useInitGame() {
 
   useEffect(() => {
     const findPlayer = game?.players.find(([address]) => address === account?.decodedAddress)
+    const isAdmin = game?.admins.find((address) => address === account?.decodedAddress)
 
     setIsSettled(!!game)
-    setIsAdmin(account?.decodedAddress === game?.config.operator)
+    setIsAdmin(!!isAdmin)
     setPlayer(
       findPlayer
     )
